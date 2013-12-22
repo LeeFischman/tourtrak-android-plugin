@@ -4,6 +4,7 @@ package edu.rit.se;
 //import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import org.apache.cordova.*;
 
@@ -17,13 +18,17 @@ import edu.rit.se.R;
 
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.TourConfig.TourConfigData;
+import edu.rit.se.trafficanalysis.api.ApiClient;
+import edu.rit.se.trafficanalysis.api.DcsException;
 import edu.rit.se.trafficanalysis.api.Messages;
+import edu.rit.se.trafficanalysis.api.Messages.RegisterRiderResponse;
 import edu.rit.se.trafficanalysis.tracking.LocationReceiver;
 import edu.rit.se.trafficanalysis.tracking.StateBroadcaster;
 import edu.rit.se.trafficanalysis.tracking.TrackingService;
+import edu.rit.se.trafficanalysis.util.GCMHelper;
 
 /**
- * This is the Tour-Trak Android Java cordova plugin. 
+ * This is the Tour-Trak Android Java Cordova Plugin. 
  * 
  * Acts as a location transmitter in the background of the device,
  * sending location updates of the rider as he or she rides through 
@@ -53,27 +58,55 @@ public class CDVInterface extends CordovaPlugin {
 
 	/**
 	 * JavaScript will fire off a plugin request to the native side (HERE) and 
-	 * will be passed to this method.
+	 * will be passed to this method. Here we check for the action aka method to call
 	 * 
 	 * This does not run on the UI Thread but on the WebCore thread.
-	 *
-	 * @param action        The action to execute.
-	 * @param args          JSONArry of arguments for the plugin.
-	 * @param callbackId    The callback id used when calling back into JavaScript.
-	 * @return              A PluginResult object with a status and message.
 	 */
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 		Log.d("HI!", "HI!");
+		
+		// this is for test purposes to ensure plugin is working properly - will be removed!
 		if (action.equals("echo")) {
-			String message = args.getString(0); 
-			Log.d("ECHO ", message);
-			this.echo(message, callbackContext);
+			
+			JSONObject msgObj = args.getJSONObject(0);
+			String msg = msgObj.getString("message");
+			this.echo(msg, callbackContext);
 			return true;
+		} else if (action.equals("startTracking")) {
+			this.startTracking(callbackContext);
+			
+		} else if (action.equals("pauseTracking")) {
+			// TODO
 		}
 		return false;
 	}
+	
+	/**
+	 * Start tracking the rider.
+	 * TODO - get the parameters for DCS URL, etc!
+	 * @param callbackContext		The callback context (called on the JS side).
+	 */
+	private void startTracking(CallbackContext callbackContext){
+		if(!locationInit){
+			this.initLoc();
+		}
+		callbackContext.success();
+	}
+	
+	/**
+	 * Pause tracking the rider
+	 * @param callbackContext		The callback context (called on the JS side).
+	 */
+	private void pauseTracking(CallbackContext callbackContext){
+		
+	}
 
+	/**
+	 * "Echos" the message back in the callbackContext
+	 * @param message				The message to be echoed
+	 * @param callbackContext		The callback context.
+	 */
 	private void echo(String message, CallbackContext callbackContext) {
 		if (message != null && message.length() > 0) { 
 			callbackContext.success(message);
@@ -115,5 +148,37 @@ public class CDVInterface extends CordovaPlugin {
 
 			cfg.setNewTourConfig(tour);
 		}
+	}
+	
+    private void initLoc() {
+
+		Log.d(TAG,"init loc: HelloWorld calling CycleOps");
+		
+		//Set up the default config for sharedprefs.
+		TourConfig cfg = new TourConfig(this.cordova.getActivity().getApplicationContext());
+		setupDefaultConfig(cfg);
+		
+		trackingService = new TrackingService();
+		stateCaster = new StateBroadcaster(this.cordova.getActivity().getApplicationContext());
+		test = new LocationReceiver();
+		
+		ApiClient apc = new ApiClient(this.cordova.getActivity().getApplicationContext());
+		try {
+			RegisterRiderResponse riderResponse = apc.register();
+			//Begin Ian's Hardcoding time.
+			cfg.setRiderId(riderResponse.getRiderId());
+//			boolean success = new ApiClient(this).registerPushId(cfg.HARDCODED_PUSH_ID);
+//			if (success) {
+//				new TourConfig(this).setGcmPushId(cfg.HARDCODED_PUSH_ID);
+//			}
+			//End Ian's Hardcoding time.
+			Log.d(this.cordova.getActivity().getApplicationContext().getPackageName(), riderResponse.toString());
+		} catch (DcsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		GCMHelper.registerPush(this.cordova.getActivity().getApplicationContext());
+		TrackingService.startTracking(this.cordova.getActivity().getApplicationContext());
+		locationInit = true;
 	}
 }

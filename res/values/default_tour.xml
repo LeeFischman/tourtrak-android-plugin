@@ -2,11 +2,11 @@
 <resources>
     <!-- All values are strings in order to be able to store times in ms. -->
     <!-- A unique persistent ID for the tour. These should not be reused across tours. -->
-    <string name="defaultConfigRaceId">testid</string>
+    <string name="defaultConfigRaceId">toffer</string>
     <!-- The name of the tour. -->
-    <string name="defaultConfigRaceName">testtour</string>
+    <string name="defaultConfigRaceName">toffer</string>
     <!-- Official Organizer/Sponsor of the tour. -->
-    <string name="defaultConfigTourOwner">testorg</string>
+    <string name="defaultConfigTourOwner">toffer</string>
     <!-- Url to open if they click the tour logo. -->
     <string name="defaultConfigTourUrl">null</string>
     <!-- Logo to show while tracking. -->

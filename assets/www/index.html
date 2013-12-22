@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <!--
+
+	USED FOR TESTING PURPOSES FOR THE ANDROID PLUGIN!
+	Modified by @tofferrosen
+	
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
     distributed with this work for additional information
@@ -38,14 +42,15 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
         
-        function success(){
-        	alert("YAY");
+        function success(message){
+        	alert("YAY " + message);
         }
         function failure(message){
-        	alert("SAD: " + message);
+        	alert("ERROR: " + message);
         }
         function echo(msg){
-        	cordova.exec(success, failure, "CDVInterface", "echo", [msg]);
+        	cordova.exec(success, failure, "CDVInterface", "echo", [{"message": msg}]);
+        	cordova.exec(success, failure, "CDVInterface", "startTracking", []);
         }
         
        document.addEventListener("deviceready", function() {
