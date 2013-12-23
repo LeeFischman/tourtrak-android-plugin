@@ -50,7 +50,7 @@
         }
         function echo(msg){
         	cordova.exec(success, failure, "CDVInterface", "echo", [{"message": msg}]);
-        	cordova.exec(success, failure, "CDVInterface", "startTracking", []);
+        	cordova.exec(success, failure, "CDVInterface", "start", []);
         }
         
        document.addEventListener("deviceready", function() {

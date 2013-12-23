@@ -64,8 +64,7 @@ public class CDVInterface extends CordovaPlugin {
 	 */
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		Log.d("HI!", "HI!");
-		
+
 		// this is for test purposes to ensure plugin is working properly - will be removed!
 		if (action.equals("echo")) {
 			
@@ -73,21 +72,26 @@ public class CDVInterface extends CordovaPlugin {
 			String msg = msgObj.getString("message");
 			this.echo(msg, callbackContext);
 			return true;
-		} else if (action.equals("startTracking")) {
-			this.startTracking(callbackContext);
+		} else if (action.equals("start")) {
+			this.start(callbackContext);
 			
 		} else if (action.equals("pauseTracking")) {
-			// TODO
+			this.pauseTracking(callbackContext);
+		} else if (action.equals("resumeTracking")) {
+			this.resumeTracking(callbackContext);
 		}
 		return false;
 	}
 	
 	/**
-	 * Start tracking the rider.
+	 * Will setup the tour configuration and automatically start
+	 * tracking the rider at the start time and stop time of the 
+	 * tour. 
+	 * 
 	 * TODO - get the parameters for DCS URL, etc!
 	 * @param callbackContext		The callback context (called on the JS side).
 	 */
-	private void startTracking(CallbackContext callbackContext){
+	private void start(CallbackContext callbackContext){
 		if(!locationInit){
 			this.initLoc();
 		}
@@ -96,10 +100,18 @@ public class CDVInterface extends CordovaPlugin {
 	
 	/**
 	 * Pause tracking the rider
-	 * @param callbackContext		The callback context (called on the JS side).
+	 * @param callbackContext		The callback context (JS side).
 	 */
 	private void pauseTracking(CallbackContext callbackContext){
-		
+		Log.d("INFO: ", "PAUSE TRACKING");
+	}
+	
+	/**
+	 * Resume tracking the rider
+	 * @param callbackContext		The callback context (JS side).
+	 */
+	private void resumeTracking(CallbackContext callbackContext){
+		Log.d("RESULE: ", "RESUME");
 	}
 
 	/**
@@ -165,6 +177,7 @@ public class CDVInterface extends CordovaPlugin {
 		ApiClient apc = new ApiClient(this.cordova.getActivity().getApplicationContext());
 		try {
 			RegisterRiderResponse riderResponse = apc.register();
+			Log.d("RIDER ID: ", riderResponse.getRiderId());
 			//Begin Ian's Hardcoding time.
 			cfg.setRiderId(riderResponse.getRiderId());
 //			boolean success = new ApiClient(this).registerPushId(cfg.HARDCODED_PUSH_ID);

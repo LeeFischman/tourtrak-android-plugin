@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http:/www.phonegap.com/ns/plugins/1.0"
+	id="edu.rit.se"
+	version="0.1.0">
+	<name>TourTrak Android Plugin</name>
+	<description>Android Plugin for tracking rider's location for TourTrak</description>
+	<license>TBD</license>
+	<keywords>Geolocation, server communication</keywords>
+	<author>Christoffer Rosen and Ian Graves</author>
+	
+	<js-module src="assets/www/js/CDVInterface.js" name="CDVInterface">
+		<clobbers target="window.CDVAndroidInterface" />
+	</js-module>
+	
+	<!-- android -->
+	<platform name="android">
+
+		<config-file target="res/xml/config.xml" parent="/*">
+		<feature name="CDVInterface">
+		<param name="android-package" value="CDVInterface"/>
+		</feature>
+		
+		</config-file>
+
+		<!-- SOURCE FILES -->
+		<source-file src="/src/edu/rit/se/trafficanalysis/BootReceiver.java" target-dir="/src/edu/rit/se/trafficanalysis/" />      
+		<source-file src="/src/edu/rit/se/trafficanalysis/GCMIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/" />     
+		<source-file src="/src/edu/rit/se/trafficanalysis/TourConfig.java" target-dir="/src/edu/rit/se/trafficanalysis/" />    
+		<source-file src="/src/edu/rit/se/trafficanalysis/api/ApiClient.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />  
+		<source-file src="/src/edu/rit/se/trafficanalysis/api/DcsException.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />    
+		<source-file src="/src/edu/rit/se/trafficanalysis/api/Messages.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />  
+		<source-file src="/src/edu/rit/se/trafficanalysis/api/RegisterPushService.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />    
+		<source-file src="/src/edu/rit/se/trafficanalysis/api/UpdateTourConfigService.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />  
+		<source-file src="/src/edu/rit/se/trafficanalysis/reminders/UpdateTourConfigService.java" target-dir="/src/edu/rit/se/trafficanalysis/reminders" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/reminders/TourReminderAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/reminders" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/reminders/TourFinishReminderAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/reminders" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/EndTrackingAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationDBOpenHelper.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationDeliverAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationDeliverIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationReceiver.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationReceiver.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationRequestAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationRequestIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationSaveIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LowBatteryReceiver.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />    
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/StartTrackingAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />   
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/StateBroadcaster.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/TimingController.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />
+		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/TrackingService.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />
+		<source-file src="/src/edu/rit/se/trafficanalysis/util/AlarmUtil.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="/src/edu/rit/se/trafficanalysis/util/DateUtil.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="/src/edu/rit/se/trafficanalysis/util/GCMHelper.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="/src/edu/rit/se/trafficanalysis/util/TourHelper.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="/src/edu/rit/se/trafficanalysis/util/Util.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="/src/edu/rit/se/trafficanalysis/util/WakefulIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="/src/edu/rit/se/CDVInterface.java" target-dir="/src/edu/rit/se/" />  
+
+		<!-- LIBRARIES-->
+		<source-file src="/libs/android-support-v4.jar" />
+		<source-file src="/libs/gcm.jar" />
+		<source-file src="/libs/gson-2.2.2.jar" />
+
+		<!-- RESOURCES -->
+		<resource-file src="/res/values/config.xml" target-dir="res/values" />
+		<resource-file src="/res/values/default_tour.xml" target-dir="res/values" />
+		<resource-file src="/res/values/notifications.xml" target-dir="res/values" />
+		<resource-file src="/res/values/strings.xml" target-dir="res/values" />
+		<resource-file src="/res/xml/config.xml" target-dir="res/xml" />	
+
+		<!-- JS -->
+		<source-file src="/assets/www/js/CDVInterface.js" />
+		
+		<!-- Append to the Android Manifest Permissions, etc -->
+		<config-file target="AndroidManifest.xml" parent="/manifest/application">
+			<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+		    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+			<permission android:name="edu.rit.se.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
+			<uses-permission android:name="edu.rit.se.permission.C2D_MESSAGE" />
+			<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+			<uses-permission android:name="android.permission.INTERNET" />
+			<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+			<uses-permission android:name="android.permission.WAKE_LOCK" />
+			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+			<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+			<uses-permission android:name="android.permission.BROADCAST_STICKY" />
+			<uses-permission android:name="android.permission.VIBRATE" />
+			<application android:debuggable="true" android:hardwareAccelerated="true" android:icon="@drawable/icon" android:label="@string/app_name">
+		        <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/app_name" android:name="TourTrakAndroidPlugin" android:theme="@android:style/Theme.Black.NoTitleBar">
+		            <intent-filter>
+		                <action android:name="android.intent.action.MAIN" />
+		                <category android:name="android.intent.category.LAUNCHER" />
+		            </intent-filter>
+		        </activity>
+
+		        <service android:name="edu.rit.se.trafficanalysis.GCMIntentService" />
+		        <service android:name="edu.rit.se.trafficanalysis.tracking.TrackingService" />
+		        <service android:name="edu.rit.se.trafficanalysis.tracking.LocationDeliverIntentService" />
+		        <service android:name="edu.rit.se.trafficanalysis.tracking.LocationSaveIntentService" />
+		        <service android:name="edu.rit.se.trafficanalysis.tracking.LocationRequestIntentService" />
+		        <service android:name="edu.rit.se.trafficanalysis.api.RegisterPushService" />
+		        <service android:name="edu.rit.se.trafficanalysis.api.UpdateTourConfigService" />
+
+		        <receiver android:name="com.google.android.gcm.GCMBroadcastReceiver" android:permission="com.google.android.c2dm.permission.SEND" >
+				  <intent-filter>
+				    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+				    <category android:name="edu.rit.se.trafficanalysis" />
+				  </intent-filter>
+				</receiver>
+				<receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm">
+						    <intent-filter>
+				        		<action android:name="edu.rit.se.trafficanalysis.startTracking"></action>
+				    		</intent-filter>
+						</receiver>
+						<receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.EndTrackingAlarm">
+						    <intent-filter>
+				        		<action android:name="edu.rit.se.trafficanalysis.endTracking"></action>
+				    		</intent-filter>
+						</receiver>
+						<receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.reminders.TourReminderAlarm">
+						    <intent-filter>
+				        		<action android:name="edu.rit.se.trafficanalysis.remindRace"></action>
+				    		</intent-filter>
+						</receiver>
+						<receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.reminders.TourFinishReminderAlarm">
+						    <intent-filter>
+				        		<action android:name="edu.rit.se.trafficanalysis.raceEndingAlarm"></action>
+				    		</intent-filter>
+						</receiver>
+						<receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.LocationDeliverAlarm">
+						    <intent-filter>
+				        		<action android:name="edu.rit.se.trafficanalysis.deliverLocationUpdate"></action>
+				    		</intent-filter>
+						</receiver>
+						
+					</config-file>
+	</platform>          
+</plugin>
