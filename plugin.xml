@@ -17,7 +17,7 @@
 
 		<config-file target="res/xml/config.xml" parent="/*">
 		<feature name="CDVInterface">
-		<param name="android-package" value="CDVInterface"/>
+			<param name="android-package" value="edu.rit.se.CDVInterface"/>
 		</feature>
 		
 		</config-file>
