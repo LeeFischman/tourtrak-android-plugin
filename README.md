@@ -18,6 +18,6 @@ For additional information, please refer to Cordova or Phonegap documentation.
 
 ###Contributing/Developing as a Standalone Application
 Simply download the whole repository and import it to Eclipse. 
-Under `assets/www exists index.html. Here, you can call various methods implemented.
+Under `assets/www exists index.html`. Here, you can call various methods implemented.
 All methods are implemented (i.e., entry point) in the `CDVInterface.java` file under
 `src/edu/rit/se`.
