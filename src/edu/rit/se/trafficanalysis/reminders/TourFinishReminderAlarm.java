@@ -1,6 +1,6 @@
 package edu.rit.se.trafficanalysis.reminders;
 
-import edu.rit.se.R;
+import edu.rit.se.tourtrak.R;
 //import edu.rit.se.trafficanalysis.R;
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.util.AlarmUtil;

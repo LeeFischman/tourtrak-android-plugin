@@ -1,6 +1,6 @@
 package edu.rit.se.trafficanalysis.tracking;
 
-import edu.rit.se.R;
+import edu.rit.se.tourtrak.R;
 //import edu.rit.se.se561.trafficanalysis.R;
 import edu.rit.se.trafficanalysis.api.Messages.LocationUpdate;
 import edu.rit.se.trafficanalysis.util.Util;

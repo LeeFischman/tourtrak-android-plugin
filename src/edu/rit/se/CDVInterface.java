@@ -13,8 +13,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
 
-import edu.rit.se.BuildConfig; 
-import edu.rit.se.R;
+import edu.rit.se.tourtrak.BuildConfig; 
+import edu.rit.se.tourtrak.R;
 
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.TourConfig.TourConfigData;
