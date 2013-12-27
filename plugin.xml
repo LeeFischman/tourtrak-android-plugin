@@ -8,68 +8,62 @@
 	<keywords>Geolocation, server communication</keywords>
 	<author>Christoffer Rosen and Ian Graves</author>
 	
-	<js-module src="assets/www/js/CDVInterface.js" name="CDVInterface">
-		<clobbers target="window.CDVAndroidInterface" />
-	</js-module>
-	
 	<!-- android -->
 	<platform name="android">
 
+		<!-- JS Cordova Interface -->
+		<js-module src="assets/www/js/CDVInterface.js" name="CDVInterface">
+			<clobbers target="window.CDVAndroidInterface" />
+		</js-module>
+		
 		<config-file target="res/xml/config.xml" parent="/*">
 		<feature name="CDVInterface">
 			<param name="android-package" value="edu.rit.se.CDVInterface"/>
 		</feature>
 		
 		</config-file>
-
+		
 		<!-- SOURCE FILES -->
-		<source-file src="/src/edu/rit/se/trafficanalysis/BootReceiver.java" target-dir="/src/edu/rit/se/trafficanalysis/" />      
-		<source-file src="/src/edu/rit/se/trafficanalysis/GCMIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/" />     
-		<source-file src="/src/edu/rit/se/trafficanalysis/TourConfig.java" target-dir="/src/edu/rit/se/trafficanalysis/" />    
-		<source-file src="/src/edu/rit/se/trafficanalysis/api/ApiClient.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />  
-		<source-file src="/src/edu/rit/se/trafficanalysis/api/DcsException.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />    
-		<source-file src="/src/edu/rit/se/trafficanalysis/api/Messages.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />  
-		<source-file src="/src/edu/rit/se/trafficanalysis/api/RegisterPushService.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />    
-		<source-file src="/src/edu/rit/se/trafficanalysis/api/UpdateTourConfigService.java" target-dir="/src/edu/rit/se/trafficanalysis/api" />  
-		<source-file src="/src/edu/rit/se/trafficanalysis/reminders/UpdateTourConfigService.java" target-dir="/src/edu/rit/se/trafficanalysis/reminders" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/reminders/TourReminderAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/reminders" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/reminders/TourFinishReminderAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/reminders" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/EndTrackingAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationDBOpenHelper.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationDeliverAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationDeliverIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationReceiver.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationReceiver.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationRequestAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationRequestIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" /> 
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LocationSaveIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/LowBatteryReceiver.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />    
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/StartTrackingAlarm.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />   
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/StateBroadcaster.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/TimingController.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />
-		<source-file src="/src/edu/rit/se/trafficanalysis/tracking/TrackingService.java" target-dir="/src/edu/rit/se/trafficanalysis/tracking" />
-		<source-file src="/src/edu/rit/se/trafficanalysis/util/AlarmUtil.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
-		<source-file src="/src/edu/rit/se/trafficanalysis/util/DateUtil.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
-		<source-file src="/src/edu/rit/se/trafficanalysis/util/GCMHelper.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
-		<source-file src="/src/edu/rit/se/trafficanalysis/util/TourHelper.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
-		<source-file src="/src/edu/rit/se/trafficanalysis/util/Util.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
-		<source-file src="/src/edu/rit/se/trafficanalysis/util/WakefulIntentService.java" target-dir="/src/edu/rit/se/trafficanalysis/util" />  
-		<source-file src="/src/edu/rit/se/CDVInterface.java" target-dir="/src/edu/rit/se/" />  
-
-		<!-- LIBRARIES-->
-		<source-file src="/libs/android-support-v4.jar" />
-		<source-file src="/libs/gcm.jar" />
-		<source-file src="/libs/gson-2.2.2.jar" />
+		<source-file src="src/edu/rit/se/trafficanalysis/BootReceiver.java" target-dir="src/edu/rit/se/trafficanalysis" />      
+		<source-file src="src/edu/rit/se/trafficanalysis/GCMIntentService.java" target-dir="src/edu/rit/se/trafficanalysis" />     
+		<source-file src="src/edu/rit/se/trafficanalysis/TourConfig.java" target-dir="src/edu/rit/se/trafficanalysis" />    
+		<source-file src="src/edu/rit/se/trafficanalysis/api/ApiClient.java" target-dir="src/edu/rit/se/trafficanalysis/api" />  
+		<source-file src="src/edu/rit/se/trafficanalysis/api/DcsException.java" target-dir="src/edu/rit/se/trafficanalysis/api" />    
+		<source-file src="src/edu/rit/se/trafficanalysis/api/Messages.java" target-dir="src/edu/rit/se/trafficanalysis/api" />  
+		<source-file src="src/edu/rit/se/trafficanalysis/api/RegisterPushService.java" target-dir="src/edu/rit/se/trafficanalysis/api" />    
+		<source-file src="src/edu/rit/se/trafficanalysis/api/UpdateTourConfigService.java" target-dir="src/edu/rit/se/trafficanalysis/api" />
+		<source-file src="src/edu/rit/se/trafficanalysis/reminders/TourReminderAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/reminders" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/reminders/TourFinishReminderAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/reminders" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/EndTrackingAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationDBOpenHelper.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationDeliverAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationDeliverIntentService.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationReceiver.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationRequestAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationRequestIntentService.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationSaveIntentService.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LowBatteryReceiver.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />    
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/StartTrackingAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />   
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/StateBroadcaster.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/TimingController.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/TrackingService.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
+		<source-file src="src/edu/rit/se/trafficanalysis/util/AlarmUtil.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="src/edu/rit/se/trafficanalysis/util/DateUtil.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="src/edu/rit/se/trafficanalysis/util/GCMHelper.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="src/edu/rit/se/trafficanalysis/util/TourHelper.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="src/edu/rit/se/trafficanalysis/util/Util.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="src/edu/rit/se/trafficanalysis/util/WakefulIntentService.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
+		<source-file src="src/edu/rit/se/CDVInterface.java" target-dir="src/edu/rit/se" /> 
 
 		<!-- RESOURCES -->
-		<resource-file src="/res/values/config.xml" target-dir="res/values" />
-		<resource-file src="/res/values/default_tour.xml" target-dir="res/values" />
-		<resource-file src="/res/values/notifications.xml" target-dir="res/values" />
-		<resource-file src="/res/values/strings.xml" target-dir="res/values" />
-		<resource-file src="/res/xml/config.xml" target-dir="res/xml" />	
-
-		<!-- JS -->
-		<source-file src="/assets/www/js/CDVInterface.js" />
+		<source-file src="res/values/default_tour.xml" target-dir="res/values" />
+		<source-file src="res/values/notifications.xml" target-dir="res/values" />
+		<source-file src="res/values/config.xml" target-dir="res/values" />
+ 
+		<!-- LIBRARIES-->
+		<source-file src="libs/android-support-v4.jar" target-dir="libs" />
+		<source-file src="libs/gcm.jar" target-dir="libs" />
+		<source-file src="libs/gson-2.2.2.jar" target-dir="libs" />
 		
 		<!-- Append to the Android Manifest services, receivers, etc -->
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
