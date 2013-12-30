@@ -65,14 +65,7 @@ public class CDVInterface extends CordovaPlugin {
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
-		// this is for test purposes to ensure plugin is working properly - will be removed!
-		if (action.equals("echo")) {
-			
-			JSONObject msgObj = args.getJSONObject(0);
-			String msg = msgObj.getString("message");
-			this.echo(msg, callbackContext);
-			return true;
-		} else if (action.equals("start")) {
+		 if (action.equals("start")) {
 			
 			JSONObject msgObj = args.getJSONObject(0);
 			Log.d("JSON: ", msgObj.toString());
@@ -113,15 +106,45 @@ public class CDVInterface extends CordovaPlugin {
 		Log.d("TOUR ID: ", tourId);
 		Log.d("RIDER ID: ", riderId);
 		
-		
-		/* Setup the tour configuration */
 		if(!locationInit){
-			this.initLoc(riderId);
+			
+			/* Setup the tour configuration */
+			TourConfig cfg = new TourConfig(this.cordova.getActivity().getApplicationContext());
+			setupTourConfiguration(cfg, dcsUrl, startTime, endTime, tourId);
+			cfg.setRiderId(riderId);
+			
+			trackingService = new TrackingService();
+			stateCaster = new StateBroadcaster(this.cordova.getActivity().getApplicationContext());
+			test = new LocationReceiver();
+			
+			GCMHelper.registerPush(this.cordova.getActivity().getApplicationContext());
+			TrackingService.startTracking(this.cordova.getActivity().getApplicationContext());
+			locationInit = true;
 		}
 		callbackContext.success();
 	}
 	
-	private void setupTourConfiguration() {
+	/** 
+	 * Set up the tour configuration
+	 * 
+	 * @param cfg			The Tour Configuration Object
+	 * @param dcsUrl		Url to the data collection server
+	 * @param startTime		The start time of the tour
+	 * @param endTime		The end time of the tour
+	 * @param tourId		The tour identification number.
+	 */
+	private void setupTourConfiguration(TourConfig cfg, String dcsUrl, int startTime, int endTime, String tourId) {
+		
+		if (!cfg.isTourConfigured()) {
+			TourConfigData tour = new TourConfigData();
+
+			tour.tour_id = tourId;
+			tour.dcs_url = dcsUrl;
+			//tour.gcm_sender_id = res.getString(R.string.defaultConfigGcmSenderId);
+			tour.start_time = startTime;
+			tour.max_tour_time = endTime;
+			cfg.setNewTourConfig(tour);
+		}
 		
 	}
 	
@@ -139,72 +162,5 @@ public class CDVInterface extends CordovaPlugin {
 	 */
 	private void resumeTracking(CallbackContext callbackContext){
 		Log.d("RESULE: ", "RESUME");
-	}
-
-	/**
-	 * "Echos" the message back in the callbackContext
-	 * @param message				The message to be echoed
-	 * @param callbackContext		The callback context.
-	 */
-	private void echo(String message, CallbackContext callbackContext) {
-		if (message != null && message.length() > 0) { 
-			callbackContext.success(message);
-		} else {
-			callbackContext.error("Expected one non-empty string argument.");
-		}
-	}
-
-	/** 
-	 * Set up the default configuration:
-	 * I wonder how necessary this really is.
-	 * @param cfg	TourConfig configuration
-	 */
-	public void setupDefaultConfig(TourConfig cfg) {
-		if (!cfg.isTourConfigured()) {
-			TourConfigData tour = new TourConfigData();
-
-			// Get a handle to the system's resources
-			Resources res = this.cordova.getActivity().getApplicationContext().getResources();
-
-			tour.tour_id = res.getString(R.string.defaultConfigRaceId);
-			tour.tour_name = res.getString(R.string.defaultConfigRaceName);
-			tour.tour_organization = res.getString(R.string.defaultConfigTourOwner);
-			tour.tour_logo = res.getString(R.string.defaultConfigTourLogo);
-			tour.tour_url = res.getString(R.string.defaultConfigTourUrl);
-			tour.dcs_url = res.getString(R.string.defaultConfigServerUrl);
-			tour.gcm_sender_id = res.getString(R.string.defaultConfigGcmSenderId);
-
-			if (BuildConfig.DEBUG) {
-				tour.dcs_url = DCS_URL;
-				tour.start_time = System.currentTimeMillis() + 60000 * 3;
-				tour.max_tour_time = 30000000;
-			} else {
-				tour.start_time = Long.parseLong(res.getString(
-						R.string.defaultConfigRaceStartTime));
-				tour.max_tour_time = Long.parseLong(res.getString(
-						R.string.defaultConfigRaceMaxTime));
-			}
-
-			cfg.setNewTourConfig(tour);
-		}
-	}
-	
-    private void initLoc(String riderId) {
-
-		Log.d(TAG,"init loc: HelloWorld calling CycleOps");
-		
-		//Set up the default config for sharedprefs.
-		TourConfig cfg = new TourConfig(this.cordova.getActivity().getApplicationContext());
-		setupDefaultConfig(cfg);
-		
-		trackingService = new TrackingService();
-		stateCaster = new StateBroadcaster(this.cordova.getActivity().getApplicationContext());
-		test = new LocationReceiver();
-		
-		Log.d("RIDER ID: ", riderId);
-		cfg.setRiderId(riderId);
-		GCMHelper.registerPush(this.cordova.getActivity().getApplicationContext());
-		TrackingService.startTracking(this.cordova.getActivity().getApplicationContext());
-		locationInit = true;
 	}
 }

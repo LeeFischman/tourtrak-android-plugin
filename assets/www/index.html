@@ -53,14 +53,14 @@
 	        // JSON tourConfig object
 	        var tourConfig = {
 	        	"dcsUrl": "devcycle.se.rit.edu",
-	        	"startTime": 1,
-	        	"endTime": 1,
+	        	"startTime": 1386525600,
+	        	"endTime": 1389114000,
 	        	"tourId": "toffer",
 	        	"riderId": "TcH4FR09ROSA4b42WJX6iw+ggkhJqTXDmlcBPiOpQ0k="
 	        };
 	        
 	        /* Test echo function */
-        	cordova.exec(success, failure, "CDVInterface", "echo", [{"message": msg}]);
+        	//cordova.exec(success, failure, "CDVInterface", "echo", [{"message": msg}]);
         	
         	/* Test start */
         	cordova.exec(success, failure, "CDVInterface", "start", [tourConfig]);
