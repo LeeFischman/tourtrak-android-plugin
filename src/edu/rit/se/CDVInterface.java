@@ -1,41 +1,38 @@
 package edu.rit.se;
 
-//import org.apache.cordova.CordovaPlugin;
-//import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.apache.cordova.*;
 
-import android.content.res.Resources;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
-
-import edu.rit.se.tourtrak.BuildConfig; 
-import edu.rit.se.tourtrak.R;
-
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.TourConfig.TourConfigData;
-import edu.rit.se.trafficanalysis.api.ApiClient;
-import edu.rit.se.trafficanalysis.api.DcsException;
-import edu.rit.se.trafficanalysis.api.Messages;
-import edu.rit.se.trafficanalysis.api.Messages.RegisterRiderResponse;
 import edu.rit.se.trafficanalysis.tracking.LocationReceiver;
 import edu.rit.se.trafficanalysis.tracking.StateBroadcaster;
 import edu.rit.se.trafficanalysis.tracking.TrackingService;
 import edu.rit.se.trafficanalysis.util.GCMHelper;
 
 /**
- * This is the Tour-Trak Android Java Cordova Plugin. 
+ * CDVInterface
+ * This is the Tour-Trak Android Java Cordova Plugin Native Interface. 
  * 
- * Acts as a location transmitter in the background of the device,
+ * Implements the exposed native method available to be called by the cordova 
+ * interface as exposed by the CDVInterface.js under assets/js.
+ * 
+ * This plugin acts as a location transmitter in the background of the device,
  * sending location updates of the rider as he or she rides through 
  * the tour to the Data Collection Server. 
  * 
  * @author Christoffer Rosen (cbr4830@rit.edu)
  * @author Ian Graves 
+ * 
+ * @TODO Push notifications
+ * @TODO Pause
+ * @TODO Continue tracking
  *
  */
 
@@ -43,14 +40,11 @@ public class CDVInterface extends CordovaPlugin {
 
 	private final static String TAG = CDVInterface.class.getSimpleName();
 	private final static String DCS_URL = "http://devcycle.se.rit.edu/";
-
-	private String mHelloTo = "World";
-	private Messages.LocationUpdate loc = null;
-
+	
 	private boolean locationInit = false;
 	private LocationListener locationListener = null;
 	private TrackingService trackingService = null;
-	private LocationReceiver test = null;
+	private LocationReceiver locReceiver = null;
 	private StateBroadcaster stateCaster= null;
 
 	// Acquire a reference to the system Location Manager
@@ -61,6 +55,7 @@ public class CDVInterface extends CordovaPlugin {
 	 * will be passed to this method. Here we check for the action aka method to call
 	 * 
 	 * This does not run on the UI Thread but on the WebCore thread.
+	 * @param action		Action to take (i.e., start, pauseTracking, resumeTracking)
 	 */
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -115,7 +110,7 @@ public class CDVInterface extends CordovaPlugin {
 			
 			trackingService = new TrackingService();
 			stateCaster = new StateBroadcaster(this.cordova.getActivity().getApplicationContext());
-			test = new LocationReceiver();
+			locReceiver = new LocationReceiver();
 			
 			GCMHelper.registerPush(this.cordova.getActivity().getApplicationContext());
 			TrackingService.startTracking(this.cordova.getActivity().getApplicationContext());
