@@ -115,12 +115,14 @@ public class CDVInterface extends CordovaPlugin {
 		
 		
 		/* Setup the tour configuration */
-		
-		
 		if(!locationInit){
-			this.initLoc();
+			this.initLoc(riderId);
 		}
 		callbackContext.success();
+	}
+	
+	private void setupTourConfiguration() {
+		
 	}
 	
 	/**
@@ -187,7 +189,7 @@ public class CDVInterface extends CordovaPlugin {
 		}
 	}
 	
-    private void initLoc() {
+    private void initLoc(String riderId) {
 
 		Log.d(TAG,"init loc: HelloWorld calling CycleOps");
 		
@@ -199,22 +201,8 @@ public class CDVInterface extends CordovaPlugin {
 		stateCaster = new StateBroadcaster(this.cordova.getActivity().getApplicationContext());
 		test = new LocationReceiver();
 		
-		ApiClient apc = new ApiClient(this.cordova.getActivity().getApplicationContext());
-		try {
-			RegisterRiderResponse riderResponse = apc.register();
-			Log.d("RIDER ID: ", riderResponse.getRiderId());
-			//Begin Ian's Hardcoding time.
-			cfg.setRiderId(riderResponse.getRiderId());
-//			boolean success = new ApiClient(this).registerPushId(cfg.HARDCODED_PUSH_ID);
-//			if (success) {
-//				new TourConfig(this).setGcmPushId(cfg.HARDCODED_PUSH_ID);
-//			}
-			//End Ian's Hardcoding time.
-			Log.d(this.cordova.getActivity().getApplicationContext().getPackageName(), riderResponse.toString());
-		} catch (DcsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Log.d("RIDER ID: ", riderId);
+		cfg.setRiderId(riderId);
 		GCMHelper.registerPush(this.cordova.getActivity().getApplicationContext());
 		TrackingService.startTracking(this.cordova.getActivity().getApplicationContext());
 		locationInit = true;
