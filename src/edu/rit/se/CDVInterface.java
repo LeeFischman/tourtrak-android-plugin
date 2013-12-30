@@ -73,8 +73,16 @@ public class CDVInterface extends CordovaPlugin {
 			this.echo(msg, callbackContext);
 			return true;
 		} else if (action.equals("start")) {
-			this.start(callbackContext);
 			
+			JSONObject msgObj = args.getJSONObject(0);
+			Log.d("JSON: ", msgObj.toString());
+			String dcsUrl = msgObj.getString("dcsUrl");
+			int startTime = msgObj.getInt("startTime");
+			int endTime = msgObj.getInt("endTime");
+			String tourId = msgObj.getString("tourId");
+			String riderId = msgObj.getString("riderId");
+			
+			this.start(dcsUrl, startTime, endTime, tourId, riderId, callbackContext);
 		} else if (action.equals("pauseTracking")) {
 			this.pauseTracking(callbackContext);
 		} else if (action.equals("resumeTracking")) {
@@ -89,9 +97,26 @@ public class CDVInterface extends CordovaPlugin {
 	 * tour. 
 	 * 
 	 * TODO - get the parameters for DCS URL, etc!
+	 * @param dcsUrl				Url to the Data Collection Server
+	 * @param startTime				Unix time of the tour start time
+	 * @param endTime				Unix time of the tour end time
+	 * @param tourId				The tour identification number
+	 * @param riderId				The rider's unique identification number.
 	 * @param callbackContext		The callback context (called on the JS side).
 	 */
-	private void start(CallbackContext callbackContext){
+	private void start(String dcsUrl, int startTime, int endTime, String tourId, 
+			String riderId, CallbackContext callbackContext){
+		
+		Log.d("DCS URL: ", dcsUrl);
+		Log.d("START TIME: ", startTime + "");
+		Log.d("END TIME: ", endTime + "");
+		Log.d("TOUR ID: ", tourId);
+		Log.d("RIDER ID: ", riderId);
+		
+		
+		/* Setup the tour configuration */
+		
+		
 		if(!locationInit){
 			this.initLoc();
 		}

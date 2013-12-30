@@ -48,13 +48,26 @@
         function failure(message){
         	alert("ERROR: " + message);
         }
-        function echo(msg){
+        function testApp(msg){
+          
+	        // JSON tourConfig object
+	        var tourConfig = {
+	        	"dcsUrl": "devcycle.se.rit.edu",
+	        	"startTime": 1,
+	        	"endTime": 1,
+	        	"tourId": "toffer",
+	        	"riderId": "testId"
+	        };
+	        
+	        /* Test echo function */
         	cordova.exec(success, failure, "CDVInterface", "echo", [{"message": msg}]);
-        	cordova.exec(success, failure, "CDVInterface", "start", []);
+        	
+        	/* Test start */
+        	cordova.exec(success, failure, "CDVInterface", "start", [tourConfig]);
         }
         
        document.addEventListener("deviceready", function() {
-   		 echo("Toffer")
+   		 testApp("Toffer")
 	   }, false)
         app.initialize();
         
