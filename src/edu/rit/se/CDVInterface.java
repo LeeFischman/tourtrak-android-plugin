@@ -31,9 +31,6 @@ import edu.rit.se.trafficanalysis.util.GCMHelper;
  * @author Ian Graves 
  * 
  * @TODO Push notifications
- * @TODO Pause
- * @TODO Continue tracking
- *
  */
 
 public class CDVInterface extends CordovaPlugin {
