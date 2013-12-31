@@ -93,11 +93,11 @@ public class CDVInterface extends CordovaPlugin {
 	private void start(String dcsUrl, long startTime, long endTime, String tourId, 
 			String riderId, CallbackContext callbackContext){
 		
-		Log.d("DCS URL: ", dcsUrl);
-		Log.d("START TIME: ", startTime + "");
-		Log.d("END TIME: ", endTime + "");
-		Log.d("TOUR ID: ", tourId);
-		Log.d("RIDER ID: ", riderId);
+		Log.d(TAG, "DCS URL: " + dcsUrl);
+		Log.d(TAG, "START TIME: " + startTime);
+		Log.d(TAG, "END TIME: " + endTime);
+		Log.d(TAG, "TOUR ID: " + tourId);
+		Log.d(TAG, "RIDER ID: " + riderId);
 		
 		if(!locationInit){
 			
@@ -149,7 +149,11 @@ public class CDVInterface extends CordovaPlugin {
 	 * @param callbackContext		The callback context (JS side).
 	 */
 	private void pauseTracking(CallbackContext callbackContext){
-		Log.d("INFO: ", "PAUSE TRACKING");
+		Log.d(TAG, "PAUSE TRACKING");
+		if (TrackingService.isTracking()){
+			TrackingService.pauseTracking(this.cordova.getActivity().getApplicationContext());
+		}
+		callbackContext.success();
 	}
 	
 	/**
@@ -157,6 +161,10 @@ public class CDVInterface extends CordovaPlugin {
 	 * @param callbackContext		The callback context (JS side).
 	 */
 	private void resumeTracking(CallbackContext callbackContext){
-		Log.d("RESULE: ", "RESUME");
+		Log.d(TAG, "RESUME TRACKING");
+		if (!TrackingService.isTracking()){
+			TrackingService.startTracking(this.cordova.getActivity().getApplicationContext());
+		}
+		callbackContext.success();
 	}
 }
