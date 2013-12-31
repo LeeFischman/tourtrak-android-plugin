@@ -46,7 +46,7 @@ public class CDVInterface extends CordovaPlugin {
 	private TrackingService trackingService = null;		/* tracking service */
 	private LocationReceiver locReceiver = null;		/* the location receiver */
 	private StateBroadcaster stateCaster= null;		 	/* state caster */
-	private LocationManager locationManager;			/* Acquire a reference to the system location manager */
+	LocationManager locationManager;					/* Acquire a reference to the system location manager */
 
 	/**
 	 * JavaScript will fire off a plugin request to the native side (HERE) and 
@@ -90,7 +90,7 @@ public class CDVInterface extends CordovaPlugin {
 	 * @param riderId				The rider's unique identification number.
 	 * @param callbackContext		The callback context (called on the JS side).
 	 */
-	private void start(String dcsUrl, int startTime, int endTime, String tourId, 
+	private void start(String dcsUrl, long startTime, long endTime, String tourId, 
 			String riderId, CallbackContext callbackContext){
 		
 		Log.d("DCS URL: ", dcsUrl);
@@ -122,20 +122,23 @@ public class CDVInterface extends CordovaPlugin {
 	 * 
 	 * @param cfg			The Tour Configuration Object
 	 * @param dcsUrl		Url to the data collection server
-	 * @param startTime		The start time of the tour
-	 * @param endTime		The end time of the tour
+	 * @param startTime		The start time of the tour (IN UNIX TIME)
+	 * @param endTime		The end time of the tour (IN UNIX TIME)
 	 * @param tourId		The tour identification number.
 	 */
-	private void setupTourConfiguration(TourConfig cfg, String dcsUrl, int startTime, int endTime, String tourId) {
+	private void setupTourConfiguration(TourConfig cfg, String dcsUrl, long startTime, long endTime, String tourId) {
 		
 		if (!cfg.isTourConfigured()) {
 			TourConfigData tour = new TourConfigData();
 
 			tour.tour_id = tourId;
 			tour.dcs_url = dcsUrl;
+			
+			/* The tour configuration expects time in form of MS since epoch */
+			tour.start_time = startTime * 1000; // unix timestamp are in seconds, convert to ms
+			tour.max_tour_time = endTime * 1000; // unix timestamp are in seconds, convert to ms
+			
 			//tour.gcm_sender_id = res.getString(R.string.defaultConfigGcmSenderId);
-			tour.start_time = startTime;
-			tour.max_tour_time = endTime;
 			cfg.setNewTourConfig(tour);
 		}
 		
