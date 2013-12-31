@@ -20,7 +20,7 @@ import edu.rit.se.trafficanalysis.util.GCMHelper;
  * CDVInterface
  * This is the Tour-Trak Android Java Cordova Plugin Native Interface. 
  * 
- * Implements the exposed native method available to be called by the cordova 
+ * Implements the native method available to be called by the cordova 
  * interface as exposed by the CDVInterface.js under assets/js.
  * 
  * This plugin acts as a location transmitter in the background of the device,
@@ -38,17 +38,15 @@ import edu.rit.se.trafficanalysis.util.GCMHelper;
 
 public class CDVInterface extends CordovaPlugin {
 
-	private final static String TAG = CDVInterface.class.getSimpleName();
-	private final static String DCS_URL = "http://devcycle.se.rit.edu/";
+	private final static String TAG = CDVInterface.class.getSimpleName(); 
+    private final static String DCS_URL = "http://devcycle.se.rit.edu/";
 	
-	private boolean locationInit = false;
-	private LocationListener locationListener = null;
-	private TrackingService trackingService = null;
-	private LocationReceiver locReceiver = null;
-	private StateBroadcaster stateCaster= null;
-
-	// Acquire a reference to the system Location Manager
-	LocationManager locationManager;
+	private boolean locationInit = false;				/* checks if it has already started tracking previously */
+	private LocationListener locationListener = null;	/* location listener */
+	private TrackingService trackingService = null;		/* tracking service */
+	private LocationReceiver locReceiver = null;		/* the location receiver */
+	private StateBroadcaster stateCaster= null;		 	/* state caster */
+	private LocationManager locationManager;			/* Acquire a reference to the system location manager */
 
 	/**
 	 * JavaScript will fire off a plugin request to the native side (HERE) and 
