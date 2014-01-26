@@ -6,14 +6,18 @@ import org.json.JSONObject;
 
 import org.apache.cordova.*;
 
+import android.content.Context;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.TourConfig.TourConfigData;
+import edu.rit.se.trafficanalysis.reminders.TourReminderAlarm;
 import edu.rit.se.trafficanalysis.tracking.LocationReceiver;
+import edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm;
 import edu.rit.se.trafficanalysis.tracking.StateBroadcaster;
 import edu.rit.se.trafficanalysis.tracking.TrackingService;
+import edu.rit.se.trafficanalysis.util.AlarmUtil;
 import edu.rit.se.trafficanalysis.util.GCMHelper;
 
 /**
@@ -25,7 +29,8 @@ import edu.rit.se.trafficanalysis.util.GCMHelper;
  * 
  * This plugin acts as a location transmitter in the background of the device,
  * sending location updates of the rider as he or she rides through 
- * the tour to the Data Collection Server. 
+ * the tour to the Data Collection Server. Tracking starts automatically based on
+ * the tour start time, which is passed in as GMT time as seconds since epoch.
  * 
  * @author Christoffer Rosen (cbr4830@rit.edu)
  * @author Ian Graves 
@@ -36,14 +41,15 @@ import edu.rit.se.trafficanalysis.util.GCMHelper;
 public class CDVInterface extends CordovaPlugin {
 
 	private final static String TAG = CDVInterface.class.getSimpleName(); 
-    private final static String DCS_URL = "http://devcycle.se.rit.edu/";
 	
 	private boolean locationInit = false;				/* checks if it has already started tracking previously */
 	private LocationListener locationListener = null;	/* location listener */
 	private TrackingService trackingService = null;		/* tracking service */
 	private LocationReceiver locReceiver = null;		/* the location receiver */
 	private StateBroadcaster stateCaster= null;		 	/* state caster */
+	private static final String START_TRACKING_ACTION = "edu.rit.se.trafficanalysis.startTracking"; /* start tracking action */
 	LocationManager locationManager;					/* Acquire a reference to the system location manager */
+	
 
 	/**
 	 * JavaScript will fire off a plugin request to the native side (HERE) and 
@@ -79,10 +85,9 @@ public class CDVInterface extends CordovaPlugin {
 	 * tracking the rider at the start time and stop time of the 
 	 * tour. 
 	 * 
-	 * TODO - get the parameters for DCS URL, etc!
 	 * @param dcsUrl				Url to the Data Collection Server
-	 * @param startTime				Unix time of the tour start time
-	 * @param endTime				Unix time of the tour end time
+	 * @param startTime				Unix time of the tour start time - EXPECTS THIS IN GMT TIMEZONE
+	 * @param endTime				Unix time of the tour end time - EXPECTS THIS IN GMT TIMEZONE
 	 * @param tourId				The tour identification number
 	 * @param riderId				The rider's unique identification number.
 	 * @param callbackContext		The callback context (called on the JS side).
@@ -97,18 +102,23 @@ public class CDVInterface extends CordovaPlugin {
 		Log.d(TAG, "RIDER ID: " + riderId);
 		
 		if(!locationInit){
+			Context ctx = this.cordova.getActivity().getApplicationContext();
 			
 			/* Setup the tour configuration */
-			TourConfig cfg = new TourConfig(this.cordova.getActivity().getApplicationContext());
+			TourConfig cfg = new TourConfig(ctx);
 			setupTourConfiguration(cfg, dcsUrl, startTime, endTime, tourId);
 			cfg.setRiderId(riderId);
 			
 			trackingService = new TrackingService();
-			stateCaster = new StateBroadcaster(this.cordova.getActivity().getApplicationContext());
+			stateCaster = new StateBroadcaster(ctx);
 			locReceiver = new LocationReceiver();
 			
-			GCMHelper.registerPush(this.cordova.getActivity().getApplicationContext());
-			TrackingService.startTracking(this.cordova.getActivity().getApplicationContext());
+			GCMHelper.registerPush(ctx);
+			
+			// Set the alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
+			AlarmUtil.setAlarm(ctx, START_TRACKING_ACTION,
+					(startTime * 1000));
+			
 			locationInit = true;
 		}
 		callbackContext.success();
