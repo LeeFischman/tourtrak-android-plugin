@@ -12,32 +12,6 @@ import android.util.Log;
 public class AlarmUtil {
 	private static final String TAG = AlarmUtil.class.getSimpleName();
 
-	public static void registerInitialRiderAlarms(Context c) {
-		TourConfig cfg = new TourConfig(c);
-		if (!cfg.isRegistered() || cfg.isTourCancelled()) {
-			return;
-		}
-
-		long curTime = System.currentTimeMillis();
-
-		// Set the alarm for automatic tracking
-		if (cfg.isAutomaticTrackEnabled() && !cfg.needsUpdatedTimes()
-				&& curTime < cfg.getRiderStartTime()) {
-			StartTrackingAlarm.setAlarm(c);
-		} else {
-			StartTrackingAlarm.cancelAlarm(c);
-		}
-
-		// Set the alarm for the race reminder notification
-		if (!cfg.isTourReminderShown()) {
-			if (curTime < cfg.getTourStartTime()) {
-				TourReminderAlarm.setAlarm(c);
-			} else {
-				cfg.setTourReminderShown();
-			}
-		}
-	}
-
 	public static void unregisterInitialRiderAlarms(Context c) {
 		StartTrackingAlarm.cancelAlarm(c);
 		TourReminderAlarm.cancelAlarm(c);

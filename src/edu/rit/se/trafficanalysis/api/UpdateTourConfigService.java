@@ -49,7 +49,7 @@ public class UpdateTourConfigService extends IntentService {
 			} else if (cfg.needsUpdatedTimes()) {
 				// Reset the alarms based on new configuration
 				AlarmUtil.unregisterInitialRiderAlarms(c);
-				AlarmUtil.registerInitialRiderAlarms(c);
+			//	AlarmUtil.registerInitialRiderAlarms(c);
 				// Alert the user that they must update their start time.
 //				NotificationHelper.showTourTimesChanged(c);
 				// Reset the current state.

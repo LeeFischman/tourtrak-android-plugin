@@ -33,7 +33,7 @@ public class BootReceiver extends BroadcastReceiver {
 //					NotificationHelper.showRaceOngoingNotification(context);
 				}
 				
-				AlarmUtil.registerInitialRiderAlarms(context);
+			//	AlarmUtil.registerInitialRiderAlarms(context);
 				
 				// If the race times changed, ask to user to change their times.
 				if (rc.needsUpdatedTimes()) {
@@ -41,7 +41,7 @@ public class BootReceiver extends BroadcastReceiver {
 				}
 				
 				// Check for new tour config.
-				context.startService(new Intent(context, UpdateTourConfigService.class));
+	//			context.startService(new Intent(context, UpdateTourConfigService.class));
 			}
 			
 		}

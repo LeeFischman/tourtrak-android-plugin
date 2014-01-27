@@ -23,11 +23,12 @@ public class StartTrackingAlarm extends BroadcastReceiver {
 	 * tracking the rider.
 	 * 
 	 * @param context - The Application Context.
+	 * @param tourStartTime - unix time in MS (GMT)
 	 */
-	public static void setAlarm(Context context) {
-		TourConfig appPrefs = new TourConfig(context);
+	public static void setAlarm(Context context, long tourStartTime) {
+		// set alarm
 		AlarmUtil.setAlarm(context, START_TRACKING_ACTION,
-				appPrefs.getRiderStartTime());
+				tourStartTime);
 	}
 
 	public static void cancelAlarm(Context context) {

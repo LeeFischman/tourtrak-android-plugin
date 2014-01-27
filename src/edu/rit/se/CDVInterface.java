@@ -13,6 +13,7 @@ import android.util.Log;
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.TourConfig.TourConfigData;
 import edu.rit.se.trafficanalysis.reminders.TourReminderAlarm;
+import edu.rit.se.trafficanalysis.tracking.EndTrackingAlarm;
 import edu.rit.se.trafficanalysis.tracking.LocationReceiver;
 import edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm;
 import edu.rit.se.trafficanalysis.tracking.StateBroadcaster;
@@ -47,7 +48,7 @@ public class CDVInterface extends CordovaPlugin {
 	private TrackingService trackingService = null;		/* tracking service */
 	private LocationReceiver locReceiver = null;		/* the location receiver */
 	private StateBroadcaster stateCaster= null;		 	/* state caster */
-	private static final String START_TRACKING_ACTION = "edu.rit.se.trafficanalysis.startTracking"; /* start tracking action */
+
 	LocationManager locationManager;					/* Acquire a reference to the system location manager */
 	
 
@@ -115,9 +116,11 @@ public class CDVInterface extends CordovaPlugin {
 			
 			GCMHelper.registerPush(ctx);
 			
-			// Set the alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
-			AlarmUtil.setAlarm(ctx, START_TRACKING_ACTION,
-					(startTime * 1000));
+			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
+			StartTrackingAlarm.setAlarm(ctx, (startTime * 1000));
+			
+			// Set alarm to stop tracking when tour finishes - converts time to ms from sec from epoch.
+			EndTrackingAlarm.setAlarm(ctx, (endTime * 1000));
 			
 			locationInit = true;
 		}
