@@ -7,16 +7,12 @@ import org.json.JSONObject;
 import org.apache.cordova.*;
 
 import android.content.Context;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.content.Intent;
 import android.util.Log;
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.TourConfig.TourConfigData;
-import edu.rit.se.trafficanalysis.reminders.TourReminderAlarm;
 import edu.rit.se.trafficanalysis.tracking.EndTrackingAlarm;
-import edu.rit.se.trafficanalysis.tracking.LocationReceiver;
 import edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm;
-import edu.rit.se.trafficanalysis.tracking.StateBroadcaster;
 import edu.rit.se.trafficanalysis.tracking.TrackingService;
 import edu.rit.se.trafficanalysis.util.AlarmUtil;
 import edu.rit.se.trafficanalysis.util.GCMHelper;
@@ -44,13 +40,19 @@ public class CDVInterface extends CordovaPlugin {
 	private final static String TAG = CDVInterface.class.getSimpleName(); 
 	
 	private boolean locationInit = false;				/* checks if it has already started tracking previously */
-	private LocationListener locationListener = null;	/* location listener */
-	private TrackingService trackingService = null;		/* tracking service */
-	private LocationReceiver locReceiver = null;		/* the location receiver */
-	private StateBroadcaster stateCaster= null;		 	/* state caster */
-
-	LocationManager locationManager;					/* Acquire a reference to the system location manager */
 	
+	@Override
+	/**
+	 * Clean up!
+	 */
+	public void onDestroy(){
+		Log.d(TAG, "Activity destroyed");
+		
+		this.cordova.getActivity().getApplicationContext().stopService(
+				new Intent(this.cordova.getActivity().getApplicationContext(),TrackingService.class));
+		
+		super.onDestroy();
+	}
 
 	/**
 	 * JavaScript will fire off a plugin request to the native side (HERE) and 
@@ -109,10 +111,6 @@ public class CDVInterface extends CordovaPlugin {
 			TourConfig cfg = new TourConfig(ctx);
 			setupTourConfiguration(cfg, dcsUrl, startTime, endTime, tourId);
 			cfg.setRiderId(riderId);
-			
-			trackingService = new TrackingService();
-			stateCaster = new StateBroadcaster(ctx);
-			locReceiver = new LocationReceiver();
 			
 			GCMHelper.registerPush(ctx);
 			

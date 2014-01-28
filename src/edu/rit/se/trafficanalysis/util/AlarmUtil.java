@@ -16,6 +16,24 @@ public class AlarmUtil {
 		StartTrackingAlarm.cancelAlarm(c);
 		TourReminderAlarm.cancelAlarm(c);
 	}
+	
+    public static void registerInitialRiderAlarms(Context c) {
+        TourConfig cfg = new TourConfig(c);
+        if (cfg.isTourCancelled()) {
+                return;
+        }
+
+        long curTime = System.currentTimeMillis();
+
+        // Set the alarm for automatic tracking - tour time stored as time passed since epoch in seconds
+        // so must convert to ms!
+        if (cfg.isAutomaticTrackEnabled() && !cfg.needsUpdatedTimes()
+                        && curTime < cfg.getRiderStartTime()*1000) {
+                StartTrackingAlarm.setAlarm(c, cfg.getRiderStartTime() * 1000);
+        } else {
+                StartTrackingAlarm.cancelAlarm(c);
+        }
+}
 
 	public static void setAlarm(Context c, String action, long time) {
 		Intent i = new Intent(action);

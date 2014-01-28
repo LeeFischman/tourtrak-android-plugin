@@ -24,7 +24,6 @@ import android.util.Log;
 
 public class TrackingService extends Service implements LocationListener {
 	private static final String TAG = TrackingService.class.getSimpleName();
-
 	/**
 	 * Actions sent to the service when it is "started"
 	 */
@@ -65,7 +64,6 @@ public class TrackingService extends Service implements LocationListener {
 
 	@Override
 	public void onCreate() {
-		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		mTourConfig = new TourConfig(this);
 		isTracking = false;
 		
@@ -78,6 +76,10 @@ public class TrackingService extends Service implements LocationListener {
 
 	}
 
+	/**
+	 * Cleans up all timers and stops tracking user's location before
+	 * destroying itself. 
+	 */
 	@Override
 	public void onDestroy() {
 		Log.i(TAG, "Tracking Service Stopped");
@@ -85,10 +87,13 @@ public class TrackingService extends Service implements LocationListener {
 		if (mTourConfig.isTourOver()) {
 			mStateBroadcaster.afterTour();
 		}
+		
+		super.onDestroy();
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		try {
 			String action = intent.getAction();
 			if (action != null) {
@@ -171,22 +176,22 @@ public class TrackingService extends Service implements LocationListener {
 			return;
 		}
 		isTracking = false;
-		
-		Log.i(TAG, "Tracking Service Paused");
 
 		mTourConfig.addTotalTrackTime(System.currentTimeMillis()
 				- startTrackTime);
 		startTrackTime = 0;
 
 		updateNotifications();
-
-		mLocationManager.removeUpdates(mPassivePendingIntent);
-		mLocationManager.removeUpdates(this);
 		
 		cancelAlarms();
 		unregisterReceivers();
 
 		mStateBroadcaster.trackingPaused();
+		
+		mLocationManager.removeUpdates(mPassivePendingIntent);
+		mLocationManager.removeUpdates(this);
+		mLocationManager = null;
+			
 	}
 	
 	
