@@ -64,8 +64,10 @@ public class TrackingService extends Service implements LocationListener {
 
 	@Override
 	public void onCreate() {
+		
 		mTourConfig = new TourConfig(this);
 		isTracking = false;
+		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		
 		mPassivePendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(
 				LocationManager.KEY_LOCATION_CHANGED),
@@ -87,13 +89,12 @@ public class TrackingService extends Service implements LocationListener {
 		if (mTourConfig.isTourOver()) {
 			mStateBroadcaster.afterTour();
 		}
-		
 		super.onDestroy();
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		
 		try {
 			String action = intent.getAction();
 			if (action != null) {
@@ -131,8 +132,9 @@ public class TrackingService extends Service implements LocationListener {
 
 	private void cancelAlarms() {
 		LocationRequestAlarm.cancelAlarm(this);
-		TourFinishReminderAlarm.cancelAlarm(this);
+		//TourFinishReminderAlarm.cancelAlarm(this);
 		EndTrackingAlarm.cancelAlarm(this);
+		LocationDeliverAlarm.cancelAlarm(this);
 	}
 
 	private void startTracking() {
@@ -150,6 +152,11 @@ public class TrackingService extends Service implements LocationListener {
 		updateNotifications();
 		registerReceivers();
 		setAlarms();
+		
+		// if tracking had stopped, reinitalize location manager
+		if(mLocationManager == null){
+			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		}
 		
 		// Request locations.
 		mLocationManager.requestLocationUpdates(
@@ -172,28 +179,52 @@ public class TrackingService extends Service implements LocationListener {
 	}
 
 	private void stopTracking() {
+		
 		if (!isTracking) {
 			return;
 		}
+		
 		isTracking = false;
-
 		mTourConfig.addTotalTrackTime(System.currentTimeMillis()
 				- startTrackTime);
 		startTrackTime = 0;
 
 		updateNotifications();
-		
-		cancelAlarms();
 		unregisterReceivers();
+		cancelAlarms(); // cancel alarms!
 
 		mStateBroadcaster.trackingPaused();
 		
+		// Remove all updates on all pending intents
+		// Used in LocationRequestIntentService and LocationSaveIntentService
+		// Sufficient to recreate the pending intents with same intents to cancel them and remove updates from location manager!
+		
+		// Remove updates & cancel from TrackingService's pending intent
+		mPassivePendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(
+				LocationManager.KEY_LOCATION_CHANGED),
+				0);
+		mPassivePendingIntent.cancel();
 		mLocationManager.removeUpdates(mPassivePendingIntent);
+
+		// Remove updates & cancel from LocationSaveIntentService pending intent
+		Intent i = new Intent(getApplicationContext(),
+				LocationReceiver.class);
+		i.setAction(LocationManager.KEY_LOCATION_CHANGED);
+		PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
+		pi.cancel();
+		mLocationManager.removeUpdates(pi);
+		
+		// Remove updates & cancel from LocationRequestIntentService pendng intent
+		i = new Intent(LocationManager.KEY_LOCATION_CHANGED);
+		pi = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+		pi.cancel();
+		mLocationManager.removeUpdates(pi);
+		
+		// Remove update from the Tracking Service listener
 		mLocationManager.removeUpdates(this);
+		
 		mLocationManager = null;
-			
 	}
-	
 	
 	private void updateNotifications() {
 		if (isTracking) {

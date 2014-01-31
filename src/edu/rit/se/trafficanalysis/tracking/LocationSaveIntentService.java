@@ -94,7 +94,7 @@ public class LocationSaveIntentService extends WakefulIntentService {
 			}
 		}
 		//always save location regardless of accuracy
-		saveLocation(location);
+		saveLocation(location);	
 	}
 
 	private void handleGPSLocation(Location location) {

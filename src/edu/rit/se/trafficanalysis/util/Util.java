@@ -48,8 +48,14 @@ public class Util {
 	 * @return
 	 */
 	public static boolean hasAnyLocationProvider(LocationManager locationManager) {
-		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) 
-				|| locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		
+		if (locationManager == null){
+			return false;
+		} else {
+			return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) 
+					|| locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		}
 	}
+		
 
 }

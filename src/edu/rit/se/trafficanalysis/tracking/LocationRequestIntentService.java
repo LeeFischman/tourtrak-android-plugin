@@ -34,7 +34,6 @@ public class LocationRequestIntentService extends WakefulIntentService {
 					TimingController.getLocationRequestDelay(this));
 
 			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
 			Intent i = new Intent(LocationManager.KEY_LOCATION_CHANGED);
 			PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
 
@@ -50,8 +49,11 @@ public class LocationRequestIntentService extends WakefulIntentService {
 				Log.i(TAG, "Requesting Location: GPS");
 			} else {
 			}
+	
 		} finally {
+			// release the lock!
 			super.onHandleIntent(intent);
+
 		}
 	}
 

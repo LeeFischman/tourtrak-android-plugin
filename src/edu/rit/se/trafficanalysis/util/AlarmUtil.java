@@ -2,6 +2,7 @@ package edu.rit.se.trafficanalysis.util;
 
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.reminders.TourReminderAlarm;
+import edu.rit.se.trafficanalysis.tracking.LocationRequestIntentService;
 import edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -53,6 +54,15 @@ public class AlarmUtil {
 				.getSystemService(Context.ALARM_SERVICE);
 		am.cancel(pi);
 		Log.i(TAG, "Alarm Cancelled: " + action);
+		
+		/*
+		if(action == "edu.rit.se.trafficanalysis.requestLocationUpdate"){
+			//Kill the location services updates on the pending intent
+			LocationRequestIntentService.kill();
+	
+			WakefulIntentService.acquireStaticLock(c);
+			c.startService(new Intent(c,
+					LocationRequestIntentService.class));
+		} */
 	}
-
 }

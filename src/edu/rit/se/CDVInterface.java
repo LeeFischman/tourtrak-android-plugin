@@ -12,6 +12,7 @@ import android.util.Log;
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.TourConfig.TourConfigData;
 import edu.rit.se.trafficanalysis.tracking.EndTrackingAlarm;
+import edu.rit.se.trafficanalysis.tracking.LocationRequestIntentService;
 import edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm;
 import edu.rit.se.trafficanalysis.tracking.TrackingService;
 import edu.rit.se.trafficanalysis.util.AlarmUtil;
@@ -46,8 +47,9 @@ public class CDVInterface extends CordovaPlugin {
 	 * Clean up!
 	 */
 	public void onDestroy(){
-		Log.d(TAG, "Activity destroyed");
+		Log.e(TAG, "onDestroy");
 		
+		// Stop the tracking service!
 		this.cordova.getActivity().getApplicationContext().stopService(
 				new Intent(this.cordova.getActivity().getApplicationContext(),TrackingService.class));
 		

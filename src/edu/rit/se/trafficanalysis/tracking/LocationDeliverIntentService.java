@@ -54,7 +54,7 @@ public class LocationDeliverIntentService extends WakefulIntentService {
 		if (!Util.isNetworkConnected(this)) {
 			Log.d(TAG, "Network not connected");
 			return;
-		}
+		} 
 
 		Log.i(TAG, "There is a network connection");
 
