@@ -25,7 +25,6 @@
 		
 		<!-- SOURCE FILES -->
 		<source-file src="src/edu/rit/se/trafficanalysis/BootReceiver.java" target-dir="src/edu/rit/se/trafficanalysis" />      
-		<source-file src="src/edu/rit/se/trafficanalysis/GCMIntentService.java" target-dir="src/edu/rit/se/trafficanalysis" />     
 		<source-file src="src/edu/rit/se/trafficanalysis/TourConfig.java" target-dir="src/edu/rit/se/trafficanalysis" />    
 		<source-file src="src/edu/rit/se/trafficanalysis/api/ApiClient.java" target-dir="src/edu/rit/se/trafficanalysis/api" />  
 		<source-file src="src/edu/rit/se/trafficanalysis/api/DcsException.java" target-dir="src/edu/rit/se/trafficanalysis/api" />    
@@ -49,8 +48,6 @@
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/TrackingService.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
 		<source-file src="src/edu/rit/se/trafficanalysis/util/AlarmUtil.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
 		<source-file src="src/edu/rit/se/trafficanalysis/util/DateUtil.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
-		<source-file src="src/edu/rit/se/trafficanalysis/util/GCMHelper.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
-		<source-file src="src/edu/rit/se/trafficanalysis/util/TourHelper.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
 		<source-file src="src/edu/rit/se/trafficanalysis/util/Util.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
 		<source-file src="src/edu/rit/se/trafficanalysis/util/WakefulIntentService.java" target-dir="src/edu/rit/se/trafficanalysis/util" />  
 		<source-file src="src/edu/rit/se/CDVInterface.java" target-dir="src/edu/rit/se" /> 
