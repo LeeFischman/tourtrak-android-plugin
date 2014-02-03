@@ -62,7 +62,6 @@
  
 		<!-- LIBRARIES-->
 		<source-file src="libs/android-support-v4.jar" target-dir="libs" />
-		<source-file src="libs/gcm.jar" target-dir="libs" />
 		<source-file src="libs/gson-2.2.2.jar" target-dir="libs" />
 		
 		<!-- Append to the Android Manifest services, receivers, etc -->
