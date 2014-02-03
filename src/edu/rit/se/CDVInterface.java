@@ -16,7 +16,6 @@ import edu.rit.se.trafficanalysis.tracking.LocationRequestIntentService;
 import edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm;
 import edu.rit.se.trafficanalysis.tracking.TrackingService;
 import edu.rit.se.trafficanalysis.util.AlarmUtil;
-import edu.rit.se.trafficanalysis.util.GCMHelper;
 
 /**
  * CDVInterface
@@ -113,8 +112,6 @@ public class CDVInterface extends CordovaPlugin {
 			TourConfig cfg = new TourConfig(ctx);
 			setupTourConfiguration(cfg, dcsUrl, startTime, endTime, tourId);
 			cfg.setRiderId(riderId);
-			
-			GCMHelper.registerPush(ctx);
 			
 			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
 			StartTrackingAlarm.setAlarm(ctx, (startTime * 1000));

@@ -12,8 +12,8 @@
         <param name="android-package" value="org.apache.cordova.App" />
     </feature>
     <feature name="CDVInterface">
-    	<param name="android-package" value="edu.rit.se.CDVInterface" />
-	</feature>
+        <param name="android-package" value="edu.rit.se.CDVInterface" />
+    </feature>
     <access origin="*" />
     <preference name="useBrowserHistory" value="true" />
     <preference name="exit-on-suspend" value="false" />
