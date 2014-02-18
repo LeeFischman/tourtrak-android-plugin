@@ -6,7 +6,7 @@
 	<description>Android Plugin for tracking rider's location for TourTrak</description>
 	<license>TBD</license>
 	<keywords>Geolocation, server communication</keywords>
-	<author>Christoffer Rosen and Ian Graves</author>
+	<author>Christoffer Rosen, Rob Culp and Ian Graves</author>
 	
 	<!-- android -->
 	<platform name="android">
@@ -56,6 +56,16 @@
 		<source-file src="res/values/default_tour.xml" target-dir="res/values" />
 		<source-file src="res/values/notifications.xml" target-dir="res/values" />
 		<source-file src="res/values/config.xml" target-dir="res/values" />
+        <source-file src="res/drawable-hdpi/splash.png" target-dir="res/drawable-hdpi" />
+        <source-file src="res/drawable-hdpi/icon.png" target-dir="res/drawable-hdpi" />
+        <source-file src="res/drawable-ldpi/splash.png" target-dir="res/drawable-ldpi" />
+        <source-file src="res/drawable-ldpi/icon.png" target-dir="res/drawable-ldpi" />
+        <source-file src="res/drawable-mdpi/splash.png" target-dir="res/drawable-mdpi" />
+        <source-file src="res/drawable-mdpi/icon.png" target-dir="res/drawable-mdpi" />
+        <source-file src="res/drawable-xhdpi/splash.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="res/drawable-xhdpi/icon.png" target-dir="res/drawable-xhdpi" />
+        <source-file src="res/drawable/splash.png" target-dir="res/drawable" />
+        <source-file src="res/drawable/icon.png" target-dir="res/drawable" />
  
 		<!-- LIBRARIES-->
 		<source-file src="libs/android-support-v4.jar" target-dir="libs" />
