@@ -1,6 +1,7 @@
 package edu.rit.se.trafficanalysis.tracking;
 
 import java.util.List;
+import java.util.Random;
 
 import edu.rit.se.tourtrak.R;
 //import edu.rit.se.se561.trafficanalysis.R;
@@ -87,7 +88,10 @@ public class LocationDeliverIntentService extends WakefulIntentService {
 			
 			long newDelay = (long) response.getPolling_rate() * 1000;
 			if(TimingController.getLocationDeliveryDelay(this) != newDelay && newDelay > 0) {
-				TimingController.setLocationDeliveryDelay(newDelay);
+				Random rand = new Random();
+				//Randomize the new interval to range of 0.5*newDelay to 1.5*newDelay
+				long randDelay = rand.nextInt((int)newDelay) + newDelay/2;
+				TimingController.setLocationDeliveryDelay(randDelay);
 			}
 
 			long newGeoDelay = (long) response.getPolling_rate() * 1000;
