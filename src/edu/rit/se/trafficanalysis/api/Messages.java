@@ -129,8 +129,10 @@ public class Messages {
 	public static class LocationUpdateResponse {
 		@SerializedName("rider_count")
 		private int rider_cnt;
-		@SerializedName("poll_rate")
+		@SerializedName("server_polling_rate")
 		private int polling_rate;
+		@SerializedName("location_polling_rate")
+		private int geolocating_rate;
 
 		public LocationUpdateResponse(int rider_cnt) {
 			this.rider_cnt = rider_cnt;
@@ -138,10 +140,10 @@ public class Messages {
 			System.out.println(polling_rate);
 		}
 		
-		public LocationUpdateResponse(int rider_cnt, int polling_rate) {
+		public LocationUpdateResponse(int rider_cnt, int polling_rate, int geolocating_rate) {
 			this.rider_cnt = rider_cnt;
 			this.polling_rate = polling_rate;
-			System.out.println(polling_rate);
+			this.geolocating_rate = geolocating_rate;
 		}
 
 		public int getRider_cnt() {
@@ -158,6 +160,14 @@ public class Messages {
 
 		public void setPolling_rate(int polling_rate) {
 			this.polling_rate = polling_rate;
+		}
+
+		public int getGeolocating_rate() {
+			return geolocating_rate;
+		}
+
+		public void setGeolocating_rate(int geolocating_rate) {
+			this.geolocating_rate = geolocating_rate;
 		}
 	}
 	/**/

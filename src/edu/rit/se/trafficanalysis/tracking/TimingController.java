@@ -68,6 +68,11 @@ public class TimingController {
 		}
 		return (long) (mInitialLocationRequestDelay * multiplier);
 	}
+
+	public static void setLocationRequestDelay(long newDelay) {
+		mInitialLocationRequestDelay = newDelay;
+		Log.i(TAG, "New Request Delay: " + mInitialLocationRequestDelay);
+	}
 	
 	/**
 	 * Check the battery next time we start tracking.

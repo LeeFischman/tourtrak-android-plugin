@@ -90,6 +90,11 @@ public class LocationDeliverIntentService extends WakefulIntentService {
 				TimingController.setLocationDeliveryDelay(newDelay);
 			}
 
+			long newGeoDelay = (long) response.getPolling_rate() * 1000;
+			if(TimingController.getLocationRequestDelay(this) != newGeoDelay && newGeoDelay > 0) {
+				TimingController.setLocationRequestDelay(newGeoDelay);
+			}
+			
 			locations = db.getLocations(batchSize);
 		}
 	}
