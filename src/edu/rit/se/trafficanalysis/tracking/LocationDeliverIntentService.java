@@ -89,8 +89,8 @@ public class LocationDeliverIntentService extends WakefulIntentService {
 			long newDelay = (long) response.getPolling_rate() * 1000;
 			if(TimingController.getLocationDeliveryDelay(this) != newDelay && newDelay > 0) {
 				Random rand = new Random();
-				//Randomize the new interval to range of 0.5*newDelay to 1.5*newDelay
-				long randDelay = rand.nextInt((int)newDelay) + newDelay/2;
+				//randomize.
+				long randDelay = rand.nextInt((int)response.getRandomization_range()*2) - response.getRandomization_range() + newDelay;
 				TimingController.setLocationDeliveryDelay(randDelay);
 			}
 
