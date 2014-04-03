@@ -111,7 +111,7 @@ public class TrackingService extends Service implements LocationListener {
 		} finally {
 			releaseWakeLock(this);
 		}
-		return START_STICKY;
+		return START_REDELIVER_INTENT;//START_STICKY;
 	}
 
 	@Override
