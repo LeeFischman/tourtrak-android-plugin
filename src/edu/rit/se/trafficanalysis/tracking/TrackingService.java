@@ -96,16 +96,23 @@ public class TrackingService extends Service implements LocationListener {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
 		try {
-			String action = intent.getAction();
-			if (action != null) {
-				if (action.equals(ACTION_START_TRACKING)) {
-					if (!isTracking) {
-						startTracking();
+			if(intent != null) {
+				String action = intent.getAction();
+				if (action != null) {
+					if (action.equals(ACTION_START_TRACKING)) {
+						if (!isTracking) {
+							startTracking();
+						}
+					} else if (action.equals(ACTION_STOP_TRACKING)) {
+						if (isTracking) {
+							stopTracking();
+						}
 					}
-				} else if (action.equals(ACTION_STOP_TRACKING)) {
-					if (isTracking) {
-						stopTracking();
-					}
+				}
+			}
+			else {
+				if (!isTracking) {
+					startTracking();
 				}
 			}
 		} finally {
