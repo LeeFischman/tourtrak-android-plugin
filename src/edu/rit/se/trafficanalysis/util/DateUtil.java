@@ -8,12 +8,11 @@ public class DateUtil {
 	public static final long DAY = 24 * HOUR;
 	
 	
-	public static String getTimeDifferenceStr(long timeDifference) {
-		StringBuilder text = new StringBuilder();
+	public static String getTimeDifferenceStr(final long timeDifference) {
+		final StringBuilder text = new StringBuilder();
 		
 		long seconds = timeDifference / 1000;
-		
-		long days = seconds / DAY;
+		final long days = seconds / DAY;
 		if (days > 0) {
 			text.append(days + "d ");
 		}

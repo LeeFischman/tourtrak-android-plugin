@@ -70,12 +70,15 @@ public class CDVInterface extends CordovaPlugin {
 			JSONObject msgObj = args.getJSONObject(0);
 			Log.d("JSON: ", msgObj.toString());
 			String dcsUrl = msgObj.getString("dcsUrl");
-			int startTime = msgObj.getInt("startTime");
-			int endTime = msgObj.getInt("endTime");
+			long startTime = msgObj.getLong("startTime");
+			long startTimeBeta = msgObj.getLong("startBetaTime");
+			long endTime = msgObj.getLong("endTime");
+			long endTimeBeta = msgObj.getLong("endBetaTime");
 			String tourId = msgObj.getString("tourId");
 			String riderId = msgObj.getString("riderId");
 			
-			this.start(dcsUrl, startTime, endTime, tourId, riderId, callbackContext);
+			this.start(dcsUrl, startTime, startTimeBeta, endTime, endTimeBeta,
+					tourId, riderId, callbackContext);
 		} else if (action.equals("pauseTracking")) {
 			this.pauseTracking(callbackContext);
 		} else if (action.equals("resumeTracking")) {
@@ -91,17 +94,21 @@ public class CDVInterface extends CordovaPlugin {
 	 * 
 	 * @param dcsUrl				Url to the Data Collection Server
 	 * @param startTime				Unix time of the tour start time - EXPECTS THIS IN GMT TIMEZONE
+	 * @param startTimeBeta			Unix time of the BETA tour start time - EXPECT THIS IN GMT TZ
 	 * @param endTime				Unix time of the tour end time - EXPECTS THIS IN GMT TIMEZONE
+	 * @param endTimeBeta			Unix time of the BETA tour end time - EXPECT THIS IN GMT TZ
 	 * @param tourId				The tour identification number
 	 * @param riderId				The rider's unique identification number.
 	 * @param callbackContext		The callback context (called on the JS side).
 	 */
-	private void start(String dcsUrl, long startTime, long endTime, String tourId, 
-			String riderId, CallbackContext callbackContext){
+	private void start(String dcsUrl, long startTime, long startTimeBeta, long endTime, 
+			long endTimeBeta, String tourId, String riderId, CallbackContext callbackContext){
 		
 		Log.d(TAG, "DCS URL: " + dcsUrl);
 		Log.d(TAG, "START TIME: " + startTime);
 		Log.d(TAG, "END TIME: " + endTime);
+		Log.d(TAG, "BETA START TIME: " + startTimeBeta);
+		Log.d(TAG, "BETA END TIME: " + endTimeBeta);
 		Log.d(TAG, "TOUR ID: " + tourId);
 		Log.d(TAG, "RIDER ID: " + riderId);
 		
