@@ -17,6 +17,20 @@ public class StartTrackingAlarm extends BroadcastReceiver {
 	
 	private final static String TAG = StartTrackingAlarm.class.getSimpleName();
 	private static final String START_TRACKING_ACTION = "edu.rit.se.trafficanalysis.startTracking";
+	private static final String START_TRACKING_ACTION_BETA = "edu.rit.se.trafficanalysis.startTrackingBeta";
+
+	private static long startTime = 0;
+	private static long startTimeBeta = 0;
+	private static long endTime = 0;
+	private static long endTimeBeta = 0;
+	
+	
+	public static void storeTimes(long newStartTime, long newStartTimeBeta, long newEndTime, long newEndTimeBeta) {
+		startTime = newStartTime;
+		startTimeBeta = newStartTimeBeta;
+		endTime = newEndTime;
+		endTimeBeta = newEndTimeBeta;
+	}
 	
 	/**
 	 * Set an alarm that signals when to start
@@ -25,14 +39,18 @@ public class StartTrackingAlarm extends BroadcastReceiver {
 	 * @param context - The Application Context.
 	 * @param tourStartTime - unix time in MS (GMT)
 	 */
-	public static void setAlarm(Context context, long tourStartTime) {
+	public static void setAlarm(Context context, long tourStartTime, boolean beta) {
 		// set alarm
-		AlarmUtil.setAlarm(context, START_TRACKING_ACTION,
-				tourStartTime);
+		AlarmUtil.setAlarm(context, START_TRACKING_ACTION, tourStartTime);
+
 	}
 
 	public static void cancelAlarm(Context context) {
 		AlarmUtil.cancelAlarm(context, START_TRACKING_ACTION);
+		
+		if(System.currentTimeMillis() < endTime*1000) {
+			StartTrackingAlarm.setAlarm(context, startTime, false);
+		}
 	}
 	
 	@Override

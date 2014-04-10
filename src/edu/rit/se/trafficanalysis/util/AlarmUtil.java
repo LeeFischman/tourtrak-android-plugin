@@ -13,6 +13,7 @@ import android.util.Log;
 public class AlarmUtil {
 	private static final String TAG = AlarmUtil.class.getSimpleName();
 
+	
 	public static void unregisterInitialRiderAlarms(Context c) {
 		StartTrackingAlarm.cancelAlarm(c);
 		TourReminderAlarm.cancelAlarm(c);
@@ -30,7 +31,7 @@ public class AlarmUtil {
         // so must convert to ms!
         if (cfg.isAutomaticTrackEnabled() && !cfg.needsUpdatedTimes()
                         && curTime < cfg.getRiderStartTime()*1000) {
-                StartTrackingAlarm.setAlarm(c, cfg.getRiderStartTime() * 1000);
+                StartTrackingAlarm.setAlarm(c, cfg.getRiderStartTime() * 1000, false);
         } else {
                 StartTrackingAlarm.cancelAlarm(c);
         }
