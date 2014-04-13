@@ -119,28 +119,12 @@ public class CDVInterface extends CordovaPlugin {
 			TourConfig cfg = new TourConfig(ctx);
 			setupTourConfiguration(cfg, dcsUrl, startTime, endTime, tourId);
 			cfg.setRiderId(riderId);
-
-/**/
-			//Pass in the times.
-			StartTrackingAlarm.storeTimes(startTime, startTimeBeta, endTime, endTimeBeta);
-			EndTrackingAlarm.storeTimes(startTime, startTimeBeta, endTime, endTimeBeta);
-		
-			if(System.currentTimeMillis() < endTimeBeta*1000){
-				//Set beta start/ends alarms
-				// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
-				StartTrackingAlarm.setAlarm(ctx, (startTimeBeta * 1000), true);
-				
-				// Set alarm to stop tracking when tour finishes - converts time to ms from sec from epoch.
-				EndTrackingAlarm.setAlarm(ctx, (endTimeBeta * 1000), true);
-			}
-			else {
-				//Set the real start/end times.
-				// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
-				StartTrackingAlarm.setAlarm(ctx, (startTime * 1000), false);
-				
-				// Set alarm to stop tracking when tour finishes - converts time to ms from sec from epoch.
-				EndTrackingAlarm.setAlarm(ctx, (endTime * 1000), false);
-			}
+			
+			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
+			StartTrackingAlarm.setAlarm(ctx, (startTime * 1000));
+			
+			// Set alarm to stop tracking when tour finishes - converts time to ms from sec from epoch.
+			EndTrackingAlarm.setAlarm(ctx, (endTime * 1000));
 			
 			locationInit = true;
 		}
