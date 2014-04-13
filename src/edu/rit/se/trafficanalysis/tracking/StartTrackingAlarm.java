@@ -49,7 +49,7 @@ public class StartTrackingAlarm extends BroadcastReceiver {
 		AlarmUtil.cancelAlarm(context, START_TRACKING_ACTION);
 		
 		if(System.currentTimeMillis() < endTime*1000) {
-			StartTrackingAlarm.setAlarm(context, startTime, false);
+//			StartTrackingAlarm.setAlarm(context, startTime, false);
 		}
 	}
 	

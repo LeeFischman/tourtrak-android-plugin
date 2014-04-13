@@ -45,7 +45,8 @@ public class EndTrackingAlarm extends BroadcastReceiver {
 		AlarmUtil.cancelAlarm(context, END_TRACKING_ACTION);
 		
 		if(System.currentTimeMillis() < endTime*1000) {
-			StartTrackingAlarm.setAlarm(context, endTime, false);
+			StartTrackingAlarm.setAlarm(context, startTime, false);
+			EndTrackingAlarm.setAlarm(context, endTime, false);
 		}
 	}
 
