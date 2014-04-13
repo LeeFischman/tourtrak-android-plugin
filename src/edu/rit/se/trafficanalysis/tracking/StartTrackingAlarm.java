@@ -39,7 +39,7 @@ public class StartTrackingAlarm extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Log.i(TAG, "In start tracking broadcast receiver");
 		TimingController.resetBatteryAlarm();
-		TrackingService.startTracking(context);
+		TrackingService.startTracking(context, false); // not beta
 	}
 
 }
