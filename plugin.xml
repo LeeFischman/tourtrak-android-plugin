@@ -34,6 +34,7 @@
 		<source-file src="src/edu/rit/se/trafficanalysis/reminders/TourReminderAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/reminders" /> 
 		<source-file src="src/edu/rit/se/trafficanalysis/reminders/TourFinishReminderAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/reminders" /> 
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/EndTrackingAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/EndTrackingAlarmBeta.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationDBOpenHelper.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationDeliverAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationDeliverIntentService.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" /> 
@@ -43,6 +44,7 @@
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LocationSaveIntentService.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/LowBatteryReceiver.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />    
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/StartTrackingAlarm.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />   
+		<source-file src="src/edu/rit/se/trafficanalysis/tracking/StartTrackingAlarmBeta.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />   
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/StateBroadcaster.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/TimingController.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
 		<source-file src="src/edu/rit/se/trafficanalysis/tracking/TrackingService.java" target-dir="src/edu/rit/se/trafficanalysis/tracking" />
