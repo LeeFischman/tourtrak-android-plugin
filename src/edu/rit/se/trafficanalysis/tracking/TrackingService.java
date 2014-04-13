@@ -29,6 +29,7 @@ public class TrackingService extends Service implements LocationListener {
 	 */
 	public static final String ACTION_START_TRACKING = "start";
 	public static final String ACTION_STOP_TRACKING = "stop";
+	public static boolean isBeta = false;
 
 	
 	private static WakeLock mWakeLock;
@@ -140,7 +141,13 @@ public class TrackingService extends Service implements LocationListener {
 	private void cancelAlarms() {
 		LocationRequestAlarm.cancelAlarm(this);
 		//TourFinishReminderAlarm.cancelAlarm(this);
-		EndTrackingAlarm.cancelAlarm(this);
+		
+		if( TrackingService.isBeta ){
+			EndTrackingAlarmBeta.cancelAlarm(this);
+		} else {
+			EndTrackingAlarm.cancelAlarm(this);
+		}
+		
 		LocationDeliverAlarm.cancelAlarm(this);
 	}
 
@@ -151,7 +158,12 @@ public class TrackingService extends Service implements LocationListener {
 		isTracking = true;
 		Log.i(TAG, "Tracking Service Started");
 
-		StartTrackingAlarm.cancelAlarm(this);
+		if (TrackingService.isBeta){
+			StartTrackingAlarmBeta.cancelAlarm(this);
+		} else{
+			StartTrackingAlarm.cancelAlarm(this);
+		}
+
 		startTrackTime = System.currentTimeMillis();
 		
 		TimingController.recalculateBatteryUsage(this);
@@ -221,7 +233,7 @@ public class TrackingService extends Service implements LocationListener {
 		pi.cancel();
 		mLocationManager.removeUpdates(pi);
 		
-		// Remove updates & cancel from LocationRequestIntentService pendng intent
+		// Remove updates & cancel from LocationRequestIntentService pending intent
 		i = new Intent(LocationManager.KEY_LOCATION_CHANGED);
 		pi = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
 		pi.cancel();
@@ -323,8 +335,9 @@ public class TrackingService extends Service implements LocationListener {
 	}
 	
 
-	public static void startTracking(Context c) {
+	public static void startTracking(Context c, boolean isBeta) {
 		aquireWakeLock(c);
+		TrackingService.isBeta = isBeta; // set the flag if it is beta or not.
 		Intent i = new Intent(c, TrackingService.class);
 		i.setAction(TrackingService.ACTION_START_TRACKING);
 		c.startService(i);

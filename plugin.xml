@@ -81,16 +81,27 @@
 			        <service android:name="edu.rit.se.trafficanalysis.api.UpdateTourConfigService" />
 
 				
-					<receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm">
-					    <intent-filter>
-			        		<action android:name="edu.rit.se.trafficanalysis.startTracking"></action>
-			    		</intent-filter>
-					</receiver>
-					<receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.EndTrackingAlarm">
-					    <intent-filter>
-			        		<action android:name="edu.rit.se.trafficanalysis.endTracking"></action>
-			    		</intent-filter>
-					</receiver>
+                
+                <receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm">
+                    <intent-filter>
+                        <action android:name="edu.rit.se.trafficanalysis.startTracking"></action>
+                    </intent-filter>
+                </receiver>
+                <receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.StartTrackingAlarmBeta">
+                    <intent-filter>
+                        <action android:name="edu.rit.se.trafficanalysis.startTrackingBeta"></action>
+                    </intent-filter>
+                </receiver>
+                <receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.EndTrackingAlarm">
+                    <intent-filter>
+                        <action android:name="edu.rit.se.trafficanalysis.endTracking"></action>
+                    </intent-filter>
+                </receiver>
+                <receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.tracking.EndTrackingAlarmBeta">
+                    <intent-filter>
+                        <action android:name="edu.rit.se.trafficanalysis.endTrackingBeta"></action>
+                    </intent-filter>
+                </receiver>
 					<receiver  android:exported="false" android:name="edu.rit.se.trafficanalysis.reminders.TourReminderAlarm">
 					    <intent-filter>
 			        		<action android:name="edu.rit.se.trafficanalysis.remindRace"></action>

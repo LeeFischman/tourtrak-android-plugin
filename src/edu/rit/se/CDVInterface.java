@@ -12,8 +12,10 @@ import android.util.Log;
 import edu.rit.se.trafficanalysis.TourConfig;
 import edu.rit.se.trafficanalysis.TourConfig.TourConfigData;
 import edu.rit.se.trafficanalysis.tracking.EndTrackingAlarm;
+import edu.rit.se.trafficanalysis.tracking.EndTrackingAlarmBeta;
 import edu.rit.se.trafficanalysis.tracking.LocationRequestIntentService;
 import edu.rit.se.trafficanalysis.tracking.StartTrackingAlarm;
+import edu.rit.se.trafficanalysis.tracking.StartTrackingAlarmBeta;
 import edu.rit.se.trafficanalysis.tracking.TrackingService;
 import edu.rit.se.trafficanalysis.util.AlarmUtil;
 
@@ -120,11 +122,19 @@ public class CDVInterface extends CordovaPlugin {
 			setupTourConfiguration(cfg, dcsUrl, startTime, endTime, tourId);
 			cfg.setRiderId(riderId);
 			
+			// Set alarm for automatic tracking (BETA) - converts time to ms from sec from epoch.
+			StartTrackingAlarmBeta.setAlarm(ctx, (startTimeBeta * 1000));
+			
 			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
 			StartTrackingAlarm.setAlarm(ctx, (startTime * 1000));
 			
-			// Set alarm to stop tracking when tour finishes - converts time to ms from sec from epoch.
+			// set alarm for stop tracking when beta finishes - converts time to ms from sec from epoch.
+			EndTrackingAlarmBeta.setAlarm(ctx, (endTimeBeta*1000));
+			
+			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
 			EndTrackingAlarm.setAlarm(ctx, (endTime * 1000));
+			
+			
 			
 			locationInit = true;
 		}
@@ -177,7 +187,7 @@ public class CDVInterface extends CordovaPlugin {
 	private void resumeTracking(CallbackContext callbackContext){
 		Log.d(TAG, "RESUME TRACKING");
 		if (!TrackingService.isTracking()){
-			TrackingService.startTracking(this.cordova.getActivity().getApplicationContext());
+			TrackingService.startTracking(this.cordova.getActivity().getApplicationContext(), TrackingService.isBeta);
 		}
 		callbackContext.success();
 	}
