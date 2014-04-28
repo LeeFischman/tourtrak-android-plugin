@@ -34,7 +34,6 @@ import edu.rit.se.trafficanalysis.util.AlarmUtil;
  * @author Christoffer Rosen (cbr4830@rit.edu)
  * @author Ian Graves 
  * 
- * @TODO Push notifications
  */
 
 public class CDVInterface extends CordovaPlugin {
@@ -42,6 +41,8 @@ public class CDVInterface extends CordovaPlugin {
 	private final static String TAG = CDVInterface.class.getSimpleName(); 
 	
 	private boolean locationInit = false;				/* checks if it has already started tracking previously */
+	private long startTime = 0;
+	private long endTime = 0;
 	
 	@Override
 	/**
@@ -121,18 +122,17 @@ public class CDVInterface extends CordovaPlugin {
 			TourConfig cfg = new TourConfig(ctx);
 			setupTourConfiguration(cfg, dcsUrl, startTime, endTime, tourId);
 			cfg.setRiderId(riderId);
-			
-			// Set alarm for automatic tracking (BETA) - converts time to ms from sec from epoch.
-			StartTrackingAlarmBeta.setAlarm(ctx, (startTimeBeta * 1000));
+	
 			
 			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
 			StartTrackingAlarm.setAlarm(ctx, (startTime * 1000));
-			
-			// set alarm for stop tracking when beta finishes - converts time to ms from sec from epoch.
-			EndTrackingAlarmBeta.setAlarm(ctx, (endTimeBeta*1000));
+			this.startTime = startTime * 1000; // convert to MS since epoch
 			
 			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
 			EndTrackingAlarm.setAlarm(ctx, (endTime * 1000));
+			this.endTime = endTime * 1000; // convert to MS since epoch
+			
+			/*  WE ARE NOT SETTING BETA TIMERS AS WE DIDN'T NEED THIS FUNCTIONALITY ANYMORE. LESS FUNCTIONALITY -> LESS BUGS! */
 			
 			
 			
@@ -174,8 +174,13 @@ public class CDVInterface extends CordovaPlugin {
 	 */
 	private void pauseTracking(CallbackContext callbackContext){
 		Log.d(TAG, "PAUSE TRACKING");
-		if (TrackingService.isTracking()){
-			TrackingService.pauseTracking(this.cordova.getActivity().getApplicationContext());
+		
+		// Check that the tour is ongoing first
+		long currentTime = (long) (System.currentTimeMillis());
+		if (currentTime >= this.startTime && currentTime <= this.endTime){
+			if (TrackingService.isTracking()){
+				TrackingService.pauseTracking(this.cordova.getActivity().getApplicationContext());
+			}
 		}
 		callbackContext.success();
 	}
@@ -186,8 +191,13 @@ public class CDVInterface extends CordovaPlugin {
 	 */
 	private void resumeTracking(CallbackContext callbackContext){
 		Log.d(TAG, "RESUME TRACKING");
-		if (!TrackingService.isTracking()){
-			TrackingService.startTracking(this.cordova.getActivity().getApplicationContext(), TrackingService.isBeta);
+		
+		// Check that the tour is ongoing first
+		long currentTime = (long) (System.currentTimeMillis());
+		if (currentTime >= this.startTime && currentTime <= this.endTime){
+			if (!TrackingService.isTracking()){
+				TrackingService.startTracking(this.cordova.getActivity().getApplicationContext(), TrackingService.isBeta);
+			}
 		}
 		callbackContext.success();
 	}
