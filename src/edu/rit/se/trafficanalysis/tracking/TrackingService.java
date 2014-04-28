@@ -29,6 +29,8 @@ public class TrackingService extends Service implements LocationListener {
 	 */
 	public static final String ACTION_START_TRACKING = "start";
 	public static final String ACTION_STOP_TRACKING = "stop";
+	public static final String ACTION_PAUSE_TRACKING = "pause";
+	
 	public static boolean isBeta = false;
 
 	
@@ -107,6 +109,10 @@ public class TrackingService extends Service implements LocationListener {
 					} else if (action.equals(ACTION_STOP_TRACKING)) {
 						if (isTracking) {
 							stopTracking();
+						} 
+					} else if (action.equals(ACTION_PAUSE_TRACKING)){
+						if (isTracking) {
+							pauseTracking();
 						}
 					}
 				}
@@ -139,20 +145,16 @@ public class TrackingService extends Service implements LocationListener {
 	}
 
 	private void cancelAlarms() {
+		Log.d(TAG, "Cancelling all alarms!");
 		LocationRequestAlarm.cancelAlarm(this);
 		//TourFinishReminderAlarm.cancelAlarm(this);
-		
-		if( TrackingService.isBeta ){
-			EndTrackingAlarmBeta.cancelAlarm(this);
-		} else {
-			EndTrackingAlarm.cancelAlarm(this);
-		}
-		
 		LocationDeliverAlarm.cancelAlarm(this);
 	}
 
 	private void startTracking() {
+		Log.i(TAG, "START TRACKING CALLED!");
 		if (isTracking) {
+			Log.i(TAG, "We were already tracking!");
 			return;
 		}
 		isTracking = true;
@@ -163,7 +165,7 @@ public class TrackingService extends Service implements LocationListener {
 		} else{
 			StartTrackingAlarm.cancelAlarm(this);
 		}
-
+	
 		startTrackTime = System.currentTimeMillis();
 		
 		TimingController.recalculateBatteryUsage(this);
@@ -196,10 +198,16 @@ public class TrackingService extends Service implements LocationListener {
 
 		mStateBroadcaster.trackingStarted();
 	}
-
-	private void stopTracking() {
-		
+	
+	/**
+	 * Stops all tracking and location delivery to server
+	 * 
+	 * @param cancel - if true, we gracefully kill everything (aka tour has ended).
+	 */
+	private void stopAllTracking(){
+		Log.i(TAG, "STOP ALL TRACKING CALLED!");
 		if (!isTracking) {
+			Log.i(TAG, "Already not tracking!");
 			return;
 		}
 		
@@ -210,8 +218,8 @@ public class TrackingService extends Service implements LocationListener {
 
 		updateNotifications();
 		unregisterReceivers();
-		cancelAlarms(); // cancel alarms!
-
+		cancelAlarms();
+		
 		mStateBroadcaster.trackingPaused();
 		
 		// Remove all updates on all pending intents
@@ -243,6 +251,25 @@ public class TrackingService extends Service implements LocationListener {
 		mLocationManager.removeUpdates(this);
 		
 		mLocationManager = null;
+	}
+
+	/**
+	 * Called at the end of a tour
+	 * Kills the alarm and then stops tracking.
+	 */
+	private void stopTracking() {
+		Log.d(TAG, "STOP TRACKING RECEIVED");
+		if( TrackingService.isBeta ){
+			EndTrackingAlarmBeta.cancelAlarm(this);
+		} else {
+			EndTrackingAlarm.cancelAlarm(this);
+		}
+		stopAllTracking(); // stop all tracking and cancel all alarms
+	}
+	
+	private void pauseTracking() {
+		Log.d(TAG, "PAUSE TRACKING RECEIVED");
+		stopAllTracking(); // stop all tracking but do not kill the end alarm..
 	}
 	
 	private void updateNotifications() {
@@ -346,7 +373,7 @@ public class TrackingService extends Service implements LocationListener {
 	public static void pauseTracking(Context c) {
 		aquireWakeLock(c);
 		Intent i = new Intent(c, TrackingService.class);
-		i.setAction(TrackingService.ACTION_STOP_TRACKING);
+		i.setAction(TrackingService.ACTION_PAUSE_TRACKING);
 		c.startService(i);
 	}
 	

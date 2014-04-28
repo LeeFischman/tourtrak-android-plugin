@@ -123,16 +123,21 @@ public class CDVInterface extends CordovaPlugin {
 			setupTourConfiguration(cfg, dcsUrl, startTime, endTime, tourId);
 			cfg.setRiderId(riderId);
 	
+			// Set alarm for automatic tracking (BETA) - converts time to ms from sec from epoch.
+			StartTrackingAlarmBeta.setAlarm(ctx, (startTimeBeta * 1000));
 			
 			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
 			StartTrackingAlarm.setAlarm(ctx, (startTime * 1000));
 			this.startTime = startTime * 1000; // convert to MS since epoch
 			
+			// set alarm for stop tracking when beta finishes - converts time to ms from sec from epoch.
+			EndTrackingAlarmBeta.setAlarm(ctx, (endTimeBeta*1000));
+			
 			// Set alarm for automatic tracking - expects time since epoch in ms GMT time of tour start time
 			EndTrackingAlarm.setAlarm(ctx, (endTime * 1000));
 			this.endTime = endTime * 1000; // convert to MS since epoch
 			
-			/*  WE ARE NOT SETTING BETA TIMERS AS WE DIDN'T NEED THIS FUNCTIONALITY ANYMORE. LESS FUNCTIONALITY -> LESS BUGS! */
+			
 			
 			
 			
@@ -181,6 +186,8 @@ public class CDVInterface extends CordovaPlugin {
 			if (TrackingService.isTracking()){
 				TrackingService.pauseTracking(this.cordova.getActivity().getApplicationContext());
 			}
+		} else {
+			Log.d(TAG, "PAUSE TRACKING not called - currently not within the tour times.");
 		}
 		callbackContext.success();
 	}
@@ -198,6 +205,8 @@ public class CDVInterface extends CordovaPlugin {
 			if (!TrackingService.isTracking()){
 				TrackingService.startTracking(this.cordova.getActivity().getApplicationContext(), TrackingService.isBeta);
 			}
+		} else {
+			Log.d(TAG, "RESUME TRACKING not called - currently not within the tour times.");
 		}
 		callbackContext.success();
 	}

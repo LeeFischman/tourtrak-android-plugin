@@ -104,8 +104,8 @@ public class TimingController {
 		float batteryPercent = Util.getBatteryPercent(c);
 		Log.i(TAG, "Battery: " + batteryPercent);
 		if (!mLowBatteryShown && !shouldTrack(c, batteryPercent)) {
-			// Battery is below minimum.
-			TrackingService.pauseTracking(c);
+			// Battery is below minimum. 
+		//	TrackingService.pauseTracking(c);
 //			NotificationHelper.showTrackingStopForBattery(c);
 			mBatteryMultiplier = 1;
 			mLowBatteryShown = true;
